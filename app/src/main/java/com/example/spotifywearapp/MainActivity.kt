@@ -6,6 +6,9 @@ import android.support.wearable.activity.WearableActivity
 import android.support.wearable.authentication.OAuthClient
 import android.view.View
 import androidx.annotation.Nullable
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.BufferedReader
 
 
 class MainActivity : WearableActivity() {
@@ -15,16 +18,26 @@ class MainActivity : WearableActivity() {
     // auth code exchange.
     private val HTTP_REDIRECT_URL = "http://localhost/callback"
 
-    private val CLIENT_ID = ""
-    private val CLIENT_SECRET = ""
+    private var CLIENT_ID = ""
+    private var CLIENT_SECRET = ""
 
     private val SCOPES = "user-modify-playback-state user-library-modify playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-read-currently-playing"
 
     private var mOAuthClient: OAuthClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState);
-        mOAuthClient = OAuthClient.create(this);
+        super.onCreate(savedInstanceState)
+        mOAuthClient = OAuthClient.create(this)
+
+        // read secrets.json
+        val jsonFileString = getJsonDataFromAsset(applicationContext, "secrets.json")
+        val gson = Gson()
+        val secretsType = object : TypeToken<Secrets>(){}.type
+        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+        // set client id and secrets
+        this.CLIENT_ID = secrets.client_id
+        this.CLIENT_SECRET = secrets.client_secret
+
         setContentView(R.layout.activity_main)
 
         // Enables Always-on
@@ -44,7 +57,7 @@ class MainActivity : WearableActivity() {
     }
 
     fun onClickStartOAuth2Flow(view: View?) {
-        var url: String;
+        val url: String
 
         val builder = Uri.Builder()
         builder.scheme("https")

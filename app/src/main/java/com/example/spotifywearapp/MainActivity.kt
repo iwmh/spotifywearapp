@@ -6,12 +6,19 @@ import android.support.wearable.activity.WearableActivity
 import android.support.wearable.authentication.OAuthClient
 import android.view.View
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.koin.android.ext.android.inject
 import java.io.BufferedReader
 
 
-class MainActivity : WearableActivity() {
+class MainActivity : FragmentActivity() {
+
+    // Lazy injected AuthTokenViewModel
+    //private val authTokenVM: AuthTokenViewModel by inject()
+    private val authTokenVM : AuthTokenViewModel by inject()
 
     // Note that normally the redirect URL would be your own server, which would in turn
     // redirect to this URL intercepted by the Android Wear companion app after completing the
@@ -38,10 +45,12 @@ class MainActivity : WearableActivity() {
         this.CLIENT_ID = secrets.client_id
         this.CLIENT_SECRET = secrets.client_secret
 
+        val sample = authTokenVM.helloworld()
+
         setContentView(R.layout.activity_main)
 
         // Enables Always-on
-        setAmbientEnabled()
+//        setAmbientEnabled()
     }
 
     override fun onDestroy() {
@@ -81,7 +90,9 @@ class MainActivity : WearableActivity() {
         }
 
         override fun onAuthorizationResponse(requestUrl: Uri?, responseUrl: Uri?) {
-            TODO("Not yet implemented")
+            Runnable {
+
+            }
         }
 
 

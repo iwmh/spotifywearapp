@@ -1,5 +1,6 @@
 package com.example.spotifywearapp
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 
 class AuthTokenViewModel(val repo: AuthTokenRepository) : ViewModel(){
@@ -19,12 +20,13 @@ class AuthTokenViewModel(val repo: AuthTokenRepository) : ViewModel(){
        return repo.expiresAt
     }
 
-    fun getNewAccessToken(authorizationCode: String) {
-        repo.getNewAccessToken(authorizationCode)
+    fun getNewAccessToken(context: Context) {
+        repo.getNewAccessToken(context)
     }
 
-    fun helloworld(): String{
-        return repo.helloworld()
+    fun storeAuthorizationCode(authorizationCode: String){
+        repo.storeAuthorizationCode(authorizationCode)
     }
+
 
 }

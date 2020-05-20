@@ -76,4 +76,11 @@ dependencies {
 
     // Koin Android ViewModel feature
     implementation "org.koin:koin-android-viewmodel:$koin_version"
+
+
+    //core
+    implementation 'com.github.kittinunf.fuel:fuel:2.2.2'
+
+    //packages
+    implementation 'com.github.kittinunf.fuel:fuel-android:2.2.2'
 }

@@ -1,6 +1,8 @@
 package com.example.spotifywearapp
 
+import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 
 interface  AuthTokenRepository{
 
@@ -10,26 +12,14 @@ interface  AuthTokenRepository{
 
     var expiresAt: String
 
+    // Newly obtain the access token
     fun getNewAccessToken(context: Context)
 
-    // Authorization Code
-    fun storeAuthorizationCode(authorizationCode: String)
-    fun readAuthorizationCode(): String
+    // Store Data to Storage
+    fun storeDataToStorage(context: Context, key: String, value: String)
 
-    // Access Token
-    fun storeAccessToken(accessToken: String)
-    fun readAccessToken(): String
+    // Read Data from Storage
+    fun readDataFromStorage(context: Context, key: String): String
 
-    // Expires In
-    fun storeExpiresIn(expiresIn: String)
-    fun readExpiresIn(): String
-
-    // Expires At
-    fun storeExpiresAt(expiresAt: String)
-    fun readExpiresAt(): String
-
-    // Refresh Token
-    fun storeRefreshToken(refreshToken: String)
-    fun readRefreshToken(): String
 
 }

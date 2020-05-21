@@ -1,26 +1,27 @@
 package com.example.spotifywearapp
 
+import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.HeaderName
 import com.github.kittinunf.fuel.core.Headers
 
-class AuthTokenRepositoryImpl() : AuthTokenRepository{
-    override var accessToken: String
-        get() = accessToken
-        set(value) {
-            accessToken = value
-        }
-    override var expiresIn: String
-        get() = expiresIn
-        set(value) {
-            expiresIn = value
-        }
-    override var expiresAt: String
-        get() = expiresAt
-        set(value) {
-            expiresAt = value
-        }
+class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
+    override var accessToken: String = ""
+//        get() = accessToken
+//        set(value) {
+//            accessToken = value
+//        }
+    override var expiresIn: String = ""
+//        get() = expiresIn
+//        set(value) {
+//            expiresIn = value
+//        }
+    override var expiresAt: String = ""
+//        get() = expiresAt
+//        set(value) {
+//            expiresAt = value
+//        }
 
     override fun getNewAccessToken(context: Context){
 
@@ -47,51 +48,24 @@ class AuthTokenRepositoryImpl() : AuthTokenRepository{
                 req, res, result ->
                     val(accessTokenResult, err) = result
                     println(accessTokenResult!!.access_token)
-
             }
-
-
     }
 
-    override fun storeAuthorizationCode(authorizationCode: String) {
-        TODO("Not yet implemented")
+    // Store Data to Storage
+    override fun storeDataToStorage(context: Context, key: String, value: String) {
+        var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
+        with(prefs.edit()){
+            putString(key, value)
+            commit()
+        }
     }
 
-    override fun readAuthorizationCode(): String {
-        TODO("Not yet implemented")
+    // Read Data from Storage
+    override fun readDataFromStorage(context: Context, key: String): String {
+        var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
+        return prefs.getString(key, "")
     }
 
-    override fun storeAccessToken(accessToken: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun readAccessToken(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun storeExpiresIn(expiresIn: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun readExpiresIn(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun storeExpiresAt(expiresAt: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun readExpiresAt(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun storeRefreshToken(refreshToken: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun readRefreshToken(): String {
-        TODO("Not yet implemented")
-    }
 
 
 }

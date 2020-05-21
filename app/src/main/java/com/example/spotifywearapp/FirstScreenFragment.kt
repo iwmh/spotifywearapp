@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.Nullable
-import androidx.navigation.Navigation
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.android.ext.android.inject
@@ -18,7 +17,6 @@ import org.koin.android.ext.android.inject
 class FirstScreenFragment : Fragment() {
 
     // Lazy injected AuthTokenViewModel
-    //private val authTokenVM: AuthTokenViewModel by inject()
     private val authTokenVM : AuthTokenViewModel by inject()
 
     // Note that normally the redirect URL would be your own server, which would in turn
@@ -38,7 +36,7 @@ class FirstScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mOAuthClient = OAuthClient.create(context)
+        mOAuthClient = OAuthClient.create(requireContext())
 
         // read secrets.json
         val jsonFileString = getJsonDataFromAsset(requireContext(), "secrets.json")
@@ -50,7 +48,6 @@ class FirstScreenFragment : Fragment() {
         this.CLIENT_SECRET = secrets.client_secret
         this.HTTP_REDIRECT_URL = secrets.redirect_url
 
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first_screen, container, false)
     }
@@ -60,6 +57,9 @@ class FirstScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO: check if there is stored auth code beforehand.
+        var storedAuthCode = authTokenVM.readDataFromStorage(requireContext(), Constants.authorization_code)
 
         view.findViewById<Button>(R.id.btn_next_screen)
             .setOnClickListener { v ->
@@ -104,9 +104,11 @@ class FirstScreenFragment : Fragment() {
         override fun onAuthorizationResponse(requestUrl: Uri?, responseUrl: Uri?) {
             // get Authorization Code from URL
             var authorizationCode = responseUrl!!.getQueryParameter("code")
-            // Store Authorization Code to storage
-            authTokenVM.storeAuthorizationCode(authorizationCode)
 
+            // Store Authorization Code to storage
+            authTokenVM.storeDataToStorage(requireContext(), Constants.authorization_code, authorizationCode)
+
+            // obtain access token
             authTokenVM.getNewAccessToken(requireContext())
         }
 

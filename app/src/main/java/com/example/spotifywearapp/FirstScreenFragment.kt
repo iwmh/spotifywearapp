@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.Nullable
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.android.ext.android.inject
@@ -35,19 +37,6 @@ class FirstScreenFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        mOAuthClient = OAuthClient.create(requireContext())
-
-        // read secrets.json
-        val jsonFileString = getJsonDataFromAsset(requireContext(), "secrets.json")
-        val gson = Gson()
-        val secretsType = object : TypeToken<Secrets>(){}.type
-        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
-        // set client id and secrets
-        this.CLIENT_ID = secrets.client_id
-        this.CLIENT_SECRET = secrets.client_secret
-        this.HTTP_REDIRECT_URL = secrets.redirect_url
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first_screen, container, false)
     }
@@ -58,14 +47,30 @@ class FirstScreenFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: check if there is stored auth code beforehand.
-        var storedAuthCode = authTokenVM.readDataFromStorage(requireContext(), Constants.authorization_code)
+        // See if the device has an authorization code
+        // If the device has an authorization code,
+        // navigate to home screen.
+        if(authTokenVM.hasAuthorizationCode(requireContext())){
+            val navController = findNavController()
+            navController.navigate(R.id.homeScreenFragment)
+        }
+
+        // start the auth flow.
+        mOAuthClient = OAuthClient.create(requireContext())
+
+        // read secrets.json
+        val jsonFileString = getJsonDataFromAsset(requireContext(), "secrets.json")
+        val gson = Gson()
+        val secretsType = object : TypeToken<Secrets>(){}.type
+        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+
+        // set client id and secrets
+        this.CLIENT_ID = secrets.client_id
+        this.CLIENT_SECRET = secrets.client_secret
+        this.HTTP_REDIRECT_URL = secrets.redirect_url
 
         view.findViewById<Button>(R.id.btn_next_screen)
             .setOnClickListener { v ->
-//                Navigation.findNavController(v) // (1)
-//                    .navigate(R.id.authScreenFragment) // (2)
-
                 onClickStartOAuth2Flow(v)
             }
     }
@@ -114,7 +119,6 @@ class FirstScreenFragment : Fragment() {
 
     }
 
-
     /**
      * This method should be called with any OAuth 2.0 URL scheme and for any provider. The callback
      * object is called after the user provides consent on the authorization screen on the Android
@@ -126,7 +130,6 @@ class FirstScreenFragment : Fragment() {
     ) {
         mOAuthClient!!.sendAuthorizationRequest(Uri.parse(url), callback)
     }
-
 
 }
 

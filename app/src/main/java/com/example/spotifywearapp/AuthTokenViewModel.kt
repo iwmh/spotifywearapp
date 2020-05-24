@@ -33,5 +33,11 @@ class AuthTokenViewModel(val repo: AuthTokenRepository) : ViewModel(){
         return repo.readDataFromStorage(context, key)
     }
 
+    // See if the device has an authorization code
+    fun hasAuthorizationCode(context: Context): Boolean{
+        return !repo.readDataFromStorage(context, Constants.authorization_code).isNullOrBlank()
+    }
+
+
 
 }

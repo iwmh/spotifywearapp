@@ -8,20 +8,10 @@ import com.github.kittinunf.fuel.core.Headers
 
 class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
     override var accessToken: String = ""
-//        get() = accessToken
-//        set(value) {
-//            accessToken = value
-//        }
+
     override var expiresIn: String = ""
-//        get() = expiresIn
-//        set(value) {
-//            expiresIn = value
-//        }
+
     override var expiresAt: String = ""
-//        get() = expiresAt
-//        set(value) {
-//            expiresAt = value
-//        }
 
     override fun getNewAccessToken(context: Context){
 
@@ -65,7 +55,5 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
         return prefs.getString(key, "")
     }
-
-
 
 }

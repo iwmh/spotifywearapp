@@ -6,11 +6,6 @@
     app:startDestination="@id/firstScreenFragment">
 
     <fragment
-        android:id="@+id/authScreenFragment"
-        android:name="com.example.spotifywearapp.AuthScreenFragment"
-        android:label="fragment_auth_screen"
-        tools:layout="@layout/fragment_auth_screen" />
-    <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.example.spotifywearapp.HomeScreenFragment"
         android:label="fragment_home_screen"
@@ -21,7 +16,7 @@
         android:label="fragment_first_screen"
         tools:layout="@layout/fragment_first_screen" >
         <action
-            android:id="@+id/action_firstScreenFragment_to_authScreenFragment2"
-            app:destination="@id/authScreenFragment" />
+            android:id="@+id/action_firstScreenFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
     </fragment>
 </navigation>

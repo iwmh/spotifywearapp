@@ -50,10 +50,10 @@ class FirstScreenFragment : Fragment() {
         // See if the device has an authorization code
         // If the device has an authorization code,
         // navigate to home screen.
-        if(authTokenVM.hasAuthorizationCode(requireContext())){
-            val navController = findNavController()
-            navController.navigate(R.id.homeScreenFragment)
-        }
+//        if(authTokenVM.hasAuthorizationCode(requireContext())){
+//            val navController = findNavController()
+//            navController.navigate(R.id.homeScreenFragment)
+//        }
 
         // start the auth flow.
         mOAuthClient = OAuthClient.create(requireContext())
@@ -113,8 +113,11 @@ class FirstScreenFragment : Fragment() {
             // Store Authorization Code to storage
             authTokenVM.storeDataToStorage(requireContext(), Constants.authorization_code, authorizationCode)
 
-            // obtain access token
-            authTokenVM.getNewAccessToken(requireContext())
+            if(authTokenVM.hasAuthorizationCode(requireContext())){
+                val navController = findNavController()
+                navController.navigate(R.id.homeScreenFragment)
+            }
+
         }
 
     }

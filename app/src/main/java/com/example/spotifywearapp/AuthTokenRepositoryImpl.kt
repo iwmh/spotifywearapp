@@ -1,10 +1,16 @@
 package com.example.spotifywearapp
 
 import android.app.Application
+import android.app.usage.ConfigurationStats
 import android.content.Context
 import android.content.SharedPreferences
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.net.URLEncoder
+import kotlin.text.Charsets.UTF_8
 
 class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
     override var accessToken: String = ""
@@ -15,11 +21,23 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
 
     override fun getNewAccessToken(context: Context){
 
+        // read auth code from storage
+        var authCode = readDataFromStorage(context, Constants.authorization_code)
+
+        // read redirect url from JSON
+        val jsonFileString = getJsonDataFromAsset(context, "secrets.json")
+        val gson = Gson()
+        val secretsType = object : TypeToken<Secrets>(){}.type
+        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+
+        // set client id and secrets
+        var redirectUrl = secrets.redirect_url
+
         // Request Body
-        val body = mapOf(
+        val param = listOf(
             "grant_type" to "authorization_code",
-            "code" to accessToken,
-            "redirect_uri" to "http://localhost/callback"
+            "code" to authCode,
+            "redirect_uri" to redirectUrl
         )
 
         // Base64 encoded "client_id : client_secret"
@@ -31,14 +49,18 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         )
 
         // Request
-        val response = Fuel.post(Constants.authorize_access_url)
-            .header(header)
-            .body(body.toString())
-            .responseObject(AccessTokenResponse.Deserializer()){
-                req, res, result ->
-                    val(accessTokenResult, err) = result
-                    println(accessTokenResult!!.access_token)
-            }
+        val response = Fuel.post(
+                Constants.access_token_url,
+                param
+        )
+        .header(Headers.CONTENT_TYPE, "application/x-www-form-urlencoded")
+        .header(header)
+        .responseObject(AccessTokenResponse.Deserializer()){
+            req, res, result ->
+                val(accessTokenResult, err) = result
+                println("")
+        }
+        println("")
     }
 
     // Store Data to Storage

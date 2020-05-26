@@ -10,15 +10,24 @@ class AuthTokenViewModel(val repo: AuthTokenRepository) : ViewModel(){
     fun getAccessToken(): String {
        return repo.accessToken
     }
+    fun setAccessToken(accessToken: String){
+        repo.accessToken = accessToken
+    }
 
     // expires_in
     fun getExpiresIn(): String {
        return repo.expiresIn
     }
+    fun setExpiresIn(expiresIn: String){
+        repo.expiresIn = expiresIn
+    }
 
     // expires_at
     fun getExpiresAt(): String {
        return repo.expiresAt
+    }
+    fun setExpiresAt(expiresAt: String){
+        repo.expiresAt = expiresAt
     }
 
     fun getNewAccessToken(context: Context) {

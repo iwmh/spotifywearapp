@@ -7,6 +7,7 @@ import com.github.kittinunf.fuel.util.encodeBase64
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
+import java.util.*
 import kotlin.text.Charsets.UTF_8
 
 // get JSON string from json file
@@ -31,9 +32,10 @@ fun createBase64String(context: Context): String {
     val CLIENT_ID = secrets.client_id
     val CLIENT_SECRET = secrets.client_secret
 
-    val charset = Charsets.UTF_8
-    val byteArray = (CLIENT_ID + ":" + CLIENT_SECRET).toByteArray(charset)
+    val encodedString = "$CLIENT_ID:$CLIENT_SECRET"
+    val encodedStringBytes = encodedString.toByteArray(UTF_8)
 
-    // flag → DEFAULT
-    return encodeToString(byteArray, 0)
+    val b64Encode = Base64.getEncoder().encodeToString(encodedStringBytes)
+
+    return b64Encode
 }

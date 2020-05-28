@@ -13,12 +13,24 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
+        // Use AndroidX test runner
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // 2) Connect JUnit 5 to the runner
+        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude("META-INF/LICENSE*")
     }
 }
 
@@ -83,4 +95,20 @@ dependencies {
 
     //packages
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.2'
+
+    // Jupiter API
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
+    // (Optional) Jupiter Parameters
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
+
+    // JUnit 5 instrumentation companion libraries
+    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.0.0"
+    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.0.0"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
+
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
 }

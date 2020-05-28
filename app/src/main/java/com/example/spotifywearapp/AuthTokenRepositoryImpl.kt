@@ -1,16 +1,11 @@
 package com.example.spotifywearapp
 
 import android.app.Application
-import android.app.usage.ConfigurationStats
 import android.content.Context
-import android.content.SharedPreferences
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.net.URLEncoder
-import kotlin.text.Charsets.UTF_8
 
 class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
     override var accessToken: String = ""
@@ -58,9 +53,7 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         .responseObject(AccessTokenResponse.Deserializer()){
             req, res, result ->
                 val(accessTokenResult, err) = result
-                println("")
         }
-        println("")
     }
 
     // Store Data to Storage

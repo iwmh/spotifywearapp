@@ -8,9 +8,9 @@ interface  AuthTokenRepository{
 
     var accessToken: String
 
-    var expiresIn: String
-
     var expiresAt: String
+
+    var refreshToken: String
 
     // Newly obtain the access token
     fun getNewAccessToken(context: Context)

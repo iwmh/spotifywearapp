@@ -1,12 +1,10 @@
 package com.example.spotifywearapp
 
 import android.content.Context
-import android.util.Base64.encode
-import android.util.Base64.encodeToString
-import com.github.kittinunf.fuel.util.encodeBase64
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.text.Charsets.UTF_8
 
@@ -29,13 +27,16 @@ fun createBase64String(context: Context): String {
     val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
 
     // get client id and secrets
-    val CLIENT_ID = secrets.client_id
-    val CLIENT_SECRET = secrets.client_secret
+    val clientId = secrets.client_id
+    val clientSecret = secrets.client_secret
 
-    val encodedString = "$CLIENT_ID:$CLIENT_SECRET"
+    val encodedString = "$clientId:$clientSecret"
     val encodedStringBytes = encodedString.toByteArray(UTF_8)
 
-    val b64Encode = Base64.getEncoder().encodeToString(encodedStringBytes)
+    return Base64.getEncoder().encodeToString(encodedStringBytes)
+}
 
-    return b64Encode
+
+fun convertToExpiresInToAt(expiresAtFrom: LocalDateTime, expiresIn: Int): String{
+    return expiresAtFrom.plusSeconds(expiresIn.toLong()).toString()
 }

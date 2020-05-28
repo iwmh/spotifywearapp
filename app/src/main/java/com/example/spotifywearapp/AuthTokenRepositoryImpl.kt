@@ -6,14 +6,26 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.time.LocalDateTime
 
 class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
     override var accessToken: String = ""
 
-    override var expiresIn: String = ""
-
     override var expiresAt: String = ""
 
+    override var refreshToken: String = ""
+
+    /*
+        Get access token from the authentication code
+
+
+        TODO: the testing below when you finish the implementations:
+        ① getting an authorization code
+        ↓
+        ② getting an access token from the authorization code
+        ↓
+        ③ getting an access token from the refresh token
+     */
     override fun getNewAccessToken(context: Context){
 
         // read auth code from storage
@@ -40,7 +52,7 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
 
         // Request Header
         val header = mapOf(
-            Headers.AUTHORIZATION to "Basic " + base64String
+            Headers.AUTHORIZATION to "Basic $base64String"
         )
 
         // Request
@@ -53,6 +65,19 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         .responseObject(AccessTokenResponse.Deserializer()){
             req, res, result ->
                 val(accessTokenResult, err) = result
+
+                // TODO: implementation of the flow for the err
+
+                // Store access token
+                storeDataToStorage(context, Constants.access_token, accessTokenResult!!.access_token)
+                // Store expires_at (converted from expires_in)
+                storeDataToStorage(
+                    context,
+                    Constants.expires_at,
+                    convertToExpiresInToAt(LocalDateTime.now(), accessTokenResult!!.expires_in))
+                // Store refresh token
+                storeDataToStorage(context, Constants.refresh_token, accessTokenResult!!.refresh_token)
+
         }
     }
 

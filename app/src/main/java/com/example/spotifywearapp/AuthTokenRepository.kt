@@ -14,6 +14,9 @@ interface  AuthTokenRepository{
     // Newly obtain the access token
     fun getNewAccessToken(context: Context)
 
+    // Refresh the access token
+    fun refreshAccessToken(context: Context)
+
     // Store Data to Storage
     fun storeDataToStorage(context: Context, key: String, value: String)
 

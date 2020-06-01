@@ -42,13 +42,8 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
             "redirect_uri" to redirectUrl
         )
 
-        // Base64 encoded "client_id : client_secret"
-        val base64String = createBase64String(context)
-
         // Request Header
-        val header = mapOf(
-            Headers.AUTHORIZATION to "Basic $base64String"
-        )
+        val header = createAuthorizationHeader(context)
 
         // Request
         val response = Fuel.post(
@@ -74,6 +69,45 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
                 storeDataToStorage(context, Constants.refresh_token, accessTokenResult!!.refresh_token)
 
         }
+
+
+    }
+
+    override fun refreshAccessToken(context: Context){
+
+        // read refresh token from storage
+        var refreshToken = readDataFromStorage(context, Constants.refresh_token)
+
+        // Request Body
+        val param = listOf(
+            "grant_type" to "refresh_token",
+            "refresh_token" to refreshToken
+        )
+
+        val header = createAuthorizationHeader(context)
+
+        // Request
+        val response = Fuel.post(
+            Constants.access_token_url,
+            param
+        )
+            .header(Headers.CONTENT_TYPE, "application/x-www-form-urlencoded")
+            .header(header)
+            .responseObject(AccessTokenResponse.Deserializer()){
+                    req, res, result ->
+                val(accessTokenResult, err) = result
+
+                // TODO: implementation of the flow for the err
+
+                // Store access token
+                storeDataToStorage(context, Constants.access_token, accessTokenResult!!.access_token)
+                // Store expires_at (converted from expires_in)
+                storeDataToStorage(
+                    context,
+                    Constants.expires_at,
+                    convertToExpiresInToAt(LocalDateTime.now(), accessTokenResult!!.expires_in))
+
+            }
     }
 
     // Check if the access token is valid or not

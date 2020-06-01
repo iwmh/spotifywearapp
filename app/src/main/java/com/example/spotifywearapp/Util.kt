@@ -1,6 +1,7 @@
 package com.example.spotifywearapp
 
 import android.content.Context
+import com.github.kittinunf.fuel.core.Headers
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
@@ -34,6 +35,16 @@ fun createBase64String(context: Context): String {
     val encodedStringBytes = encodedString.toByteArray(UTF_8)
 
     return Base64.getEncoder().encodeToString(encodedStringBytes)
+}
+
+fun createAuthorizationHeader(context: Context): Map<String, String>{
+    // Base64 encoded "client_id : client_secret"
+    val base64String = createBase64String(context)
+
+    // Request Header
+    return mapOf(
+        Headers.AUTHORIZATION to "Basic $base64String"
+    )
 }
 
 fun convertToExpiresInToAt(expiresAtFrom: LocalDateTime, expiresIn: Int): String{

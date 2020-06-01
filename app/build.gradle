@@ -16,8 +16,6 @@ android {
 
         // Use AndroidX test runner
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        // 2) Connect JUnit 5 to the runner
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
     buildTypes {
         release {
@@ -32,10 +30,18 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE*")
     }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 repositories {
     jcenter()
+    google()
 }
 
 dependencies {
@@ -82,33 +88,41 @@ dependencies {
 
     // Koin for Android
     implementation "org.koin:koin-android:$koin_version"
-
     // Koin Android Scope feature
     implementation "org.koin:koin-android-scope:$koin_version"
-
     // Koin Android ViewModel feature
     implementation "org.koin:koin-android-viewmodel:$koin_version"
 
+    // Koin Test
+    testImplementation "org.koin:koin-test:$koin_version"
 
+    // Fuel
     //core
     implementation 'com.github.kittinunf.fuel:fuel:2.2.2'
-
     //packages
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.2'
 
-    // Jupiter API
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
-    // (Optional) Jupiter Parameters
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
+//    // Jupiter API
+//    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
+//    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
 
-    // JUnit 5 instrumentation companion libraries
-    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.0.0"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.0.0"
+    // Mockito Kotlin
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
+    // Robolectric
+    testImplementation 'org.robolectric:robolectric:4.0.2'
+    androidTestImplementation 'org.robolectric:robolectric:4.0.2'
 
+    // Core library
+    testImplementation 'androidx.test:core:1.2.0'
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
+    // AndroidJUnitRunner and JUnit Rules
+    testImplementation 'androidx.test:runner:1.2.0'
+    testImplementation 'androidx.test:rules:1.2.0'
+
+    // Assertions
+    testImplementation 'androidx.test.ext:junit:1.0.0'
+    testImplementation 'androidx.test.ext:truth:1.0.0'
+
 }

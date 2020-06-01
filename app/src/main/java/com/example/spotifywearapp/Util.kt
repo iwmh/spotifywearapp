@@ -36,7 +36,15 @@ fun createBase64String(context: Context): String {
     return Base64.getEncoder().encodeToString(encodedStringBytes)
 }
 
-
 fun convertToExpiresInToAt(expiresAtFrom: LocalDateTime, expiresIn: Int): String{
     return expiresAtFrom.plusSeconds(expiresIn.toLong()).toString()
+}
+
+fun getSecrets(context: Context): Secrets{
+    // read redirect url from JSON
+    val jsonFileString = getJsonDataFromAsset(context, "secrets.json")
+    val gson = Gson()
+    val secretsType = object : TypeToken<Secrets>(){}.type
+
+    return gson.fromJson(jsonFileString, secretsType)
 }

@@ -1,8 +1,7 @@
 package com.example.spotifywearapp
 
-import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
+import java.time.LocalDateTime
 
 interface  AuthTokenRepository{
 
@@ -21,5 +20,7 @@ interface  AuthTokenRepository{
     // Read Data from Storage
     fun readDataFromStorage(context: Context, key: String): String
 
+    // Check if the access token is expired or not
+    fun isAccessTokenValid(context: Context, now: LocalDateTime, marginSeconds: Int = 0): Boolean
 
 }

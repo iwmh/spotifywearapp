@@ -58,11 +58,8 @@ class FirstScreenFragment : Fragment() {
         // start the auth flow.
         mOAuthClient = OAuthClient.create(requireContext())
 
-        // read secrets.json
-        val jsonFileString = getJsonDataFromAsset(requireContext(), "secrets.json")
-        val gson = Gson()
-        val secretsType = object : TypeToken<Secrets>(){}.type
-        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+        // get secrets
+        val secrets: Secrets = getSecrets(requireContext())
 
         // set client id and secrets
         this.CLIENT_ID = secrets.client_id

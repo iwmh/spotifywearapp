@@ -30,6 +30,13 @@
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
+
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+        <uses-library android:name="android.test.mock"
+            android:required="false" />
     </application>
 
     <uses-feature android:name="android.hardware.type.watch" />

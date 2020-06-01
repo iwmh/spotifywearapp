@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.time.LocalDateTime
 
 class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
@@ -31,11 +29,8 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         // read auth code from storage
         var authCode = readDataFromStorage(context, Constants.authorization_code)
 
-        // read redirect url from JSON
-        val jsonFileString = getJsonDataFromAsset(context, "secrets.json")
-        val gson = Gson()
-        val secretsType = object : TypeToken<Secrets>(){}.type
-        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+        // get secrets
+        val secrets: Secrets = getSecrets(context)
 
         // set client id and secrets
         var redirectUrl = secrets.redirect_url
@@ -79,6 +74,18 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
                 storeDataToStorage(context, Constants.refresh_token, accessTokenResult!!.refresh_token)
 
         }
+    }
+
+    // Check if the access token is valid or not
+    override fun isAccessTokenValid(context: Context, time: LocalDateTime, marginSeconds: Int): Boolean {
+
+        // read expires_at time
+        val expiresAt = LocalDateTime.parse(readDataFromStorage(context, Constants.expires_at))
+
+        val marginedExpiresAt = expiresAt.minusSeconds(marginSeconds.toLong())
+
+        return if (time.compareTo(marginedExpiresAt) < 0) true else false
+
     }
 
     // Store Data to Storage

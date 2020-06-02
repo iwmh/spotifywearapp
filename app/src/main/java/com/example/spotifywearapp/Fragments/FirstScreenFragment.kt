@@ -1,4 +1,4 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Fragments
 
 import android.content.Context
 import android.net.Uri
@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.Nullable
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.spotifywearapp.ViewModels.AuthTokenViewModel
+import com.example.spotifywearapp.Utils.Constants
+import com.example.spotifywearapp.R
+import com.example.spotifywearapp.Models.Secrets
+import com.example.spotifywearapp.Utils.getSecrets
 import org.koin.android.ext.android.inject
 
 class FirstScreenFragment : Fragment() {
@@ -59,7 +61,8 @@ class FirstScreenFragment : Fragment() {
         mOAuthClient = OAuthClient.create(requireContext())
 
         // get secrets
-        val secrets: Secrets = getSecrets(requireContext())
+        val secrets: Secrets =
+            getSecrets(requireContext())
 
         // set client id and secrets
         this.CLIENT_ID = secrets.client_id
@@ -108,7 +111,8 @@ class FirstScreenFragment : Fragment() {
             var authorizationCode = responseUrl!!.getQueryParameter("code")
 
             // Store Authorization Code to storage
-            authTokenVM.storeDataToStorage(requireContext(), Constants.authorization_code, authorizationCode)
+            authTokenVM.storeDataToStorage(requireContext(),
+                Constants.authorization_code, authorizationCode)
 
             if(authTokenVM.hasAuthorizationCode(requireContext())){
                 val navController = findNavController()

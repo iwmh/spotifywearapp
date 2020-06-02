@@ -1,4 +1,4 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Models
 
 class Secrets {
     var client_id: String = ""

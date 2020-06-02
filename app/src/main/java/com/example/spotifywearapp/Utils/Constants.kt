@@ -1,4 +1,4 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Utils
 
 class Constants {
     companion object {

@@ -1,6 +1,9 @@
 package com.example.spotifywearapp
 
 import android.app.Application
+import com.example.spotifywearapp.Repositories.AuthTokenRepository
+import com.example.spotifywearapp.Repositories.AuthTokenRepositoryImpl
+import com.example.spotifywearapp.ViewModels.AuthTokenViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -21,9 +24,13 @@ class App : Application(){
 
     private val appModule = module {
         // single instance of AuthTokenRepository
-        single<AuthTokenRepository> { AuthTokenRepositoryImpl(androidApplication())}
+        single<AuthTokenRepository> {
+            AuthTokenRepositoryImpl(
+                androidApplication()
+            )
+        }
 
         // Simple Presenter Factory
-        factory {AuthTokenViewModel(get())}
+        factory { AuthTokenViewModel(get()) }
     }
 }

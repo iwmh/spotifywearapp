@@ -1,12 +1,18 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Repositories
 
 import android.app.Application
 import android.content.Context
+import com.example.spotifywearapp.Models.AccessTokenResponse
+import com.example.spotifywearapp.Models.Secrets
+import com.example.spotifywearapp.Utils.Constants
+import com.example.spotifywearapp.Utils.convertToExpiresInToAt
+import com.example.spotifywearapp.Utils.getSecrets
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import java.time.LocalDateTime
 
-class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
+class AuthTokenRepositoryImpl(app: Application) :
+    AuthTokenRepository {
     override var accessToken: String = ""
 
     override var expiresAt: String = ""
@@ -30,7 +36,8 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
         var authCode = readDataFromStorage(context, Constants.authorization_code)
 
         // get secrets
-        val secrets: Secrets = getSecrets(context)
+        val secrets: Secrets =
+            getSecrets(context)
 
         // set client id and secrets
         var redirectUrl = secrets.redirect_url
@@ -64,7 +71,11 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
                 storeDataToStorage(
                     context,
                     Constants.expires_at,
-                    convertToExpiresInToAt(LocalDateTime.now(), accessTokenResult!!.expires_in))
+                    convertToExpiresInToAt(
+                        LocalDateTime.now(),
+                        accessTokenResult!!.expires_in
+                    )
+                )
                 // Store refresh token
                 storeDataToStorage(context, Constants.refresh_token, accessTokenResult!!.refresh_token)
 
@@ -105,7 +116,11 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
                 storeDataToStorage(
                     context,
                     Constants.expires_at,
-                    convertToExpiresInToAt(LocalDateTime.now(), accessTokenResult!!.expires_in))
+                    convertToExpiresInToAt(
+                        LocalDateTime.now(),
+                        accessTokenResult!!.expires_in
+                    )
+                )
 
             }
     }

@@ -2,6 +2,8 @@ package com.example.spotifywearapp
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import com.example.spotifywearapp.Repositories.AuthTokenRepositoryImpl
+import com.example.spotifywearapp.Utils.Constants
 import com.github.kittinunf.fuel.core.Headers
 import org.junit.After
 import org.junit.Before
@@ -25,7 +27,9 @@ class AuthTokenRepositoryImplTest : KoinTest{
     @Before
     fun before(){
         context = ApplicationProvider.getApplicationContext()
-        impl = AuthTokenRepositoryImpl(ApplicationProvider.getApplicationContext())
+        impl = AuthTokenRepositoryImpl(
+            ApplicationProvider.getApplicationContext()
+        )
     }
 
     @Test

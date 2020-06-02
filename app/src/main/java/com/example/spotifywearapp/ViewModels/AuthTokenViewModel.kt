@@ -1,8 +1,9 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.ViewModels
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.spotifywearapp.Repositories.AuthTokenRepository
+import com.example.spotifywearapp.Utils.Constants
 
 class AuthTokenViewModel(val repo: AuthTokenRepository) : ViewModel(){
 

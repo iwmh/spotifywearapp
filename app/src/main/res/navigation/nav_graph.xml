@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/homeScreenFragment"
-        android:name="com.example.spotifywearapp.HomeScreenFragment"
+        android:name="com.example.spotifywearapp.Fragments.HomeScreenFragment"
         android:label="fragment_home_screen"
         tools:layout="@layout/fragment_home_screen" />
     <fragment
         android:id="@+id/firstScreenFragment"
-        android:name="com.example.spotifywearapp.FirstScreenFragment"
+        android:name="com.example.spotifywearapp.Fragments.FirstScreenFragment"
         android:label="fragment_first_screen"
         tools:layout="@layout/fragment_first_screen" >
         <action

@@ -1,6 +1,7 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Utils
 
 import android.content.Context
+import com.example.spotifywearapp.Models.Secrets
 import com.github.kittinunf.fuel.core.Headers
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,7 +23,10 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
 }
 
 fun createBase64String(context: Context): String {
-    val jsonFileString = getJsonDataFromAsset(context, "secrets.json")
+    val jsonFileString = getJsonDataFromAsset(
+        context,
+        "secrets.json"
+    )
     val gson = Gson()
     val secretsType = object : TypeToken<Secrets>(){}.type
     val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
@@ -39,7 +43,8 @@ fun createBase64String(context: Context): String {
 
 fun createAuthorizationHeader(context: Context): Map<String, String>{
     // Base64 encoded "client_id : client_secret"
-    val base64String = createBase64String(context)
+    val base64String =
+        createBase64String(context)
 
     // Request Header
     return mapOf(
@@ -51,9 +56,12 @@ fun convertToExpiresInToAt(expiresAtFrom: LocalDateTime, expiresIn: Int): String
     return expiresAtFrom.plusSeconds(expiresIn.toLong()).toString()
 }
 
-fun getSecrets(context: Context): Secrets{
+fun getSecrets(context: Context): Secrets {
     // read redirect url from JSON
-    val jsonFileString = getJsonDataFromAsset(context, "secrets.json")
+    val jsonFileString = getJsonDataFromAsset(
+        context,
+        "secrets.json"
+    )
     val gson = Gson()
     val secretsType = object : TypeToken<Secrets>(){}.type
 

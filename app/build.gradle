@@ -37,6 +37,13 @@ android {
 
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/Utils'
+            }
+        }
+    }
 }
 
 repositories {

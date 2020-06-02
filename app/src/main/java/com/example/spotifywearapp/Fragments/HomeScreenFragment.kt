@@ -1,4 +1,4 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.navigation.Navigation
+import com.example.spotifywearapp.ViewModels.AuthTokenViewModel
+import com.example.spotifywearapp.R
 import org.koin.android.ext.android.inject
 
 class HomeScreenFragment : Fragment() {

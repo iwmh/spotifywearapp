@@ -26,4 +26,6 @@ interface  AuthTokenRepository{
     // Check if the access token is expired or not
     fun isAccessTokenValid(context: Context, now: LocalDateTime, marginSeconds: Int = 0): Boolean
 
+    fun createAuthorizationHeader(context: Context): Map<String, String>
+
 }

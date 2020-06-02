@@ -122,6 +122,16 @@ class AuthTokenRepositoryImpl(app: Application) : AuthTokenRepository{
 
     }
 
+    // create authorization header from access token
+    override fun createAuthorizationHeader(context: Context): Map<String, String>{
+        // read access token from storage
+        val accessToken = readDataFromStorage(context, Constants.access_token)
+        // return authorization header
+        return mapOf(
+                Headers.AUTHORIZATION to accessToken
+                )
+    }
+
     // Store Data to Storage
     override fun storeDataToStorage(context: Context, key: String, value: String) {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)

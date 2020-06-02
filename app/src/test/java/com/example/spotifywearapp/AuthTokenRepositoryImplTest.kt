@@ -2,9 +2,11 @@ package com.example.spotifywearapp
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import com.github.kittinunf.fuel.core.Headers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
@@ -112,6 +114,24 @@ class AuthTokenRepositoryImplTest : KoinTest{
         var now = LocalDateTime.parse("2019-07-28T15:31:32.753")
 
         assert(impl.isAccessTokenValid(context, now, 30))
+
+        stopKoin()
+
+    }
+
+    @Test
+    fun createAuthorizationHeader() {
+        var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
+
+        var accessToken = "access_token_2020_06_02"
+        with(prefs.edit()) {
+            putString(Constants.access_token, accessToken)
+            commit()
+        }
+
+        var expected = mapOf( Headers.AUTHORIZATION to "access_token_2020_06_02")
+
+        assertEquals(expected, impl.createAuthorizationHeader(context))
 
         stopKoin()
 

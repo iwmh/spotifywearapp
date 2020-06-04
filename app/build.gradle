@@ -40,7 +40,7 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs 'src/main/java', 'src/main/java/Utils'
+                srcDirs 'src/main/java', 'src/main/java/Utils', 'src/main/java/Models/WebAPI'
             }
         }
     }

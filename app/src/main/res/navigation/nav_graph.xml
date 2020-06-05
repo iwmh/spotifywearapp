@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_firstScreenFragment_to_homeScreenFragment"
             app:destination="@id/homeScreenFragment" />
+        <action
+            android:id="@+id/action_firstScreenFragment_to_ambientScreenFragment"
+            app:destination="@id/ambientScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/ambientScreenFragment"

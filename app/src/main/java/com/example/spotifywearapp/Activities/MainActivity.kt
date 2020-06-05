@@ -30,23 +30,31 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
 
     inner class MyAmbientCallback : AmbientModeSupport.AmbientCallback() {
 
-        var navCon = findNavController(R.id.fragment4)
+        var navController = findNavController(R.id.fragment4)
 
         override fun onEnterAmbient(ambientDetails: Bundle?) {
             // Handle entering ambient mode
-            var kjsfh = ""
-            navCon.navigate(R.id.ambientScreenFragment)
+
+            // If the current destination is the FirstFragment, it won't navigate.
+            var currentDest = navController.currentDestination
+            if(currentDest?.label != "fragment_first_screen"){
+                navController.navigate(R.id.ambientScreenFragment)
+            }
         }
 
         override fun onExitAmbient() {
             // Handle exiting ambient mode
-            var kjsfh = ""
-            navCon.popBackStack()
+            var currentDest = navController.currentDestination
+            // If the current destination is the FirstFragment, it won't navigate.
+
+            if(currentDest?.label != "fragment_first_screen"){
+                navController.popBackStack()
+            }
         }
 
         override fun onUpdateAmbient() {
             // Update the content
-            var kjsfh = ""
+            var kjsfh = navController.currentDestination
         }
     }
 

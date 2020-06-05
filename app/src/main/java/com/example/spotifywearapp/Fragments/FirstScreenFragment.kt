@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.Nullable
 import androidx.navigation.fragment.findNavController
-import com.example.spotifywearapp.ViewModels.AuthTokenViewModel
+import com.example.spotifywearapp.ViewModels.AppViewModel
 import com.example.spotifywearapp.Utils.Constants
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.Models.Secrets
@@ -20,8 +20,8 @@ import org.koin.android.ext.android.inject
 
 class FirstScreenFragment : Fragment() {
 
-    // Lazy injected AuthTokenViewModel
-    private val authTokenVM : AuthTokenViewModel by inject()
+    // Lazy injected AppViewModel
+    private val appVM : AppViewModel by inject()
 
     // Note that normally the redirect URL would be your own server, which would in turn
     // redirect to this URL intercepted by the Android Wear companion app after completing the
@@ -110,10 +110,10 @@ class FirstScreenFragment : Fragment() {
             var authorizationCode = responseUrl!!.getQueryParameter("code")
 
             // Store Authorization Code to storage
-            authTokenVM.storeDataToStorage(requireContext(),
+            appVM.storeDataToStorage(requireContext(),
                 Constants.authorization_code, authorizationCode)
 
-            if(authTokenVM.hasAuthorizationCode(requireContext())){
+            if(appVM.hasAuthorizationCode(requireContext())){
                 val navController = findNavController()
                 navController.navigate(R.id.homeScreenFragment)
             }

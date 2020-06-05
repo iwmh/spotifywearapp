@@ -9,7 +9,7 @@ import com.example.spotifywearapp.Utils.convertToExpiresInToAt
 import com.github.kittinunf.fuel.core.Headers
 import java.time.LocalDateTime
 
-class AuthTokenViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(){
+class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(){
 
     // Newly obtain the access token
     fun getNewAccessToken(context: Context) {

@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.spotifywearapp.ViewModels.AuthTokenViewModel
+import com.example.spotifywearapp.ViewModels.AppViewModel
 import com.example.spotifywearapp.R
 import org.koin.android.ext.android.inject
 
 class HomeScreenFragment : Fragment() {
 
-    // Lazy injected AuthTokenViewModel
-    private val authTokenVM : AuthTokenViewModel by inject()
+    // Lazy injected AppViewModel
+    private val appVM : AppViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,7 @@ class HomeScreenFragment : Fragment() {
 
     private fun obtainAccessToken() {
         // obtain access token
-        authTokenVM.getNewAccessToken(requireContext())
+        appVM.getNewAccessToken(requireContext())
 
     }
 

@@ -1,14 +1,15 @@
-package com.example.spotifywearapp
+package com.example.spotifywearapp.ViewModels
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.example.spotifywearapp.Repositories.AuthTokenRepositoryImpl
+import com.example.spotifywearapp.Repositories.ApiRepositoryImpl
+import com.example.spotifywearapp.Repositories.StorageRepositoryImpl
 import com.example.spotifywearapp.Utils.Constants
 import com.github.kittinunf.fuel.core.Headers
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
-import org.junit.jupiter.api.Assertions.assertEquals
+
+import org.junit.jupiter.api.Assertions.*
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
@@ -16,23 +17,29 @@ import org.robolectric.RobolectricTestRunner
 import java.time.LocalDateTime
 
 @RunWith(RobolectricTestRunner::class)
-class AuthTokenRepositoryImplTest : KoinTest{
+internal class AuthTokenViewModelTest: KoinTest {
 
     companion object {
         lateinit var context: Context
-        lateinit var impl: AuthTokenRepositoryImpl
+        lateinit var apiRepository: ApiRepositoryImpl
+        lateinit var storageRepository: StorageRepositoryImpl
+        lateinit var viewModel: AuthTokenViewModel
     }
 
     // Set up
     @Before
     fun before(){
         context = ApplicationProvider.getApplicationContext()
-        impl = AuthTokenRepositoryImpl(
+        apiRepository = ApiRepositoryImpl(
             ApplicationProvider.getApplicationContext()
         )
+        storageRepository = StorageRepositoryImpl(
+            ApplicationProvider.getApplicationContext()
+        )
+        viewModel = AuthTokenViewModel(apiRepository, storageRepository)
     }
 
-    @Test
+    @org.junit.Test
     fun accessTokenIsNotValid() {
 
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
@@ -45,13 +52,13 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var now = LocalDateTime.parse("2019-07-28T15:32:02.755")
 
-        assert(!impl.isAccessTokenValid(context, now, 0))
+        assert(!viewModel.isAccessTokenValid(context, now, 0))
 
         stopKoin()
 
     }
 
-    @Test
+    @org.junit.Test
     fun accessTokenIsValid() {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
 
@@ -63,13 +70,13 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var now = LocalDateTime.parse("2019-07-28T15:32:02.753")
 
-        assert(impl.isAccessTokenValid(context, now, 0))
+        assert(viewModel.isAccessTokenValid(context, now, 0))
 
         stopKoin()
 
     }
 
-    @Test
+    @org.junit.Test
     fun accessTokenIsInvalidBySomeMargin() {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
 
@@ -81,13 +88,13 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var now = LocalDateTime.parse("2019-07-28T15:31:32.755")
 
-        assert(!impl.isAccessTokenValid(context, now, 30))
+        assert(!viewModel.isAccessTokenValid(context, now, 30))
 
         stopKoin()
 
     }
 
-    @Test
+    @org.junit.Test
     fun accessTokenIsInvalidBySomeMargin2() {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
 
@@ -99,13 +106,13 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var now = LocalDateTime.parse("2019-07-28T15:31:32.754")
 
-        assert(!impl.isAccessTokenValid(context, now, 30))
+        assert(!viewModel.isAccessTokenValid(context, now, 30))
 
         stopKoin()
 
     }
 
-    @Test
+    @org.junit.Test
     fun accessTokenIsValidBySomeMargin() {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
 
@@ -117,13 +124,13 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var now = LocalDateTime.parse("2019-07-28T15:31:32.753")
 
-        assert(impl.isAccessTokenValid(context, now, 30))
+        assert(viewModel.isAccessTokenValid(context, now, 30))
 
         stopKoin()
 
     }
 
-    @Test
+    @org.junit.Test
     fun createAuthorizationHeader() {
         var prefs = context.getSharedPreferences("SaveData", Context.MODE_PRIVATE)
 
@@ -135,7 +142,7 @@ class AuthTokenRepositoryImplTest : KoinTest{
 
         var expected = mapOf( Headers.AUTHORIZATION to "access_token_2020_06_02")
 
-        assertEquals(expected, impl.createAuthorizationHeader(context))
+        assertEquals(expected, viewModel.createAuthorizationHeader(context))
 
         stopKoin()
 

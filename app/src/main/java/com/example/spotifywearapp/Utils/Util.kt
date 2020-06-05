@@ -41,7 +41,7 @@ fun createBase64String(context: Context): String {
     return Base64.getEncoder().encodeToString(encodedStringBytes)
 }
 
-fun createAuthorizationHeader(context: Context): Map<String, String>{
+fun createAuthorizationHeaderForNewAccessToken(context: Context): Map<String, String>{
     // Base64 encoded "client_id : client_secret"
     val base64String =
         createBase64String(context)

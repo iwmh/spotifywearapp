@@ -49,10 +49,9 @@ class FirstScreenFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        // See if the device has an authorization code
-        // If the device has an authorization code,
-        // navigate to home screen.
-//        if(authTokenVM.hasAuthorizationCode(requireContext())){
+        // If the refresh token is found, navigate to Home.
+//        val refToken = authTokenVM.readDataFromStorage(requireContext(), Constants.refresh_token)
+//        if(!refToken.isNullOrEmpty()){
 //            val navController = findNavController()
 //            navController.navigate(R.id.homeScreenFragment)
 //        }

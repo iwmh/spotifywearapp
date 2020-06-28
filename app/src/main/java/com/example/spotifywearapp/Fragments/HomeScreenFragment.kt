@@ -37,10 +37,9 @@ class HomeScreenFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.get_track_button)
-            .setOnClickListener { v ->
-                getTrackInfo(view)
-            }
+        // get currently playin track info
+        // when the view is created.
+        getTrackInfo(view)
 
     }
 

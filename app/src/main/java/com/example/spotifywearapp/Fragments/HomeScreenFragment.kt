@@ -44,19 +44,11 @@ class HomeScreenFragment : Fragment() {
 
     }
 
-    private fun obtainAccessToken() {
-        // obtain access token
-        appVM.getNewAccessToken(requireContext())
-
-    }
-
     private fun getTrackInfo(view: View){
         // get track info
         var playing = CurrentlyPlayingObject()
 
             playing = appVM.getCurrentlyPlayingTrack(requireContext())
-
-
 
         // get each view
         val artistView = view.findViewById<TextView>(R.id.artist_name)

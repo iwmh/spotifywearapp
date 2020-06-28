@@ -2,58 +2,97 @@ package com.example.spotifywearapp.ViewModels
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.Repositories.ApiRepository
 import com.example.spotifywearapp.Repositories.StorageRepository
 import com.example.spotifywearapp.Utils.Constants
 import com.example.spotifywearapp.Utils.convertToExpiresInToAt
 import com.github.kittinunf.fuel.core.Headers
+import kotlinx.coroutines.*
 import java.time.LocalDateTime
+import kotlin.coroutines.CoroutineContext
 
-class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(){
+class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
+
+    private val job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
+    }
 
     // Newly obtain the access token
     fun getNewAccessToken(context: Context) {
-        // read auth code from storage
-        var authCode = readDataFromStorage(context, Constants.authorization_code)
+        runBlocking {
 
-        var accessTokenResult = apiRepository.getNewAccessToken(context, authCode)
+            launch(context = Dispatchers.IO) {
 
-        // Store access token
-        storeDataToStorage(context, Constants.access_token, accessTokenResult!!.access_token)
-        // Store expires_at (converted from expires_in)
-        storeDataToStorage(
-            context,
-            Constants.expires_at,
-            convertToExpiresInToAt(
-                LocalDateTime.now(),
-                accessTokenResult!!.expires_in
-            )
-        )
-        // Store refresh token
-        storeDataToStorage(context, Constants.refresh_token, accessTokenResult!!.refresh_token)
+                // read auth code from storage
+                var authCode = readDataFromStorage(context, Constants.authorization_code)
+
+                var accessTokenResult = apiRepository.getNewAccessToken(context, authCode)
+
+                // Store access token
+                storeDataToStorage(
+                    context,
+                    Constants.access_token,
+                    accessTokenResult!!.access_token
+                )
+                // Store expires_at (converted from expires_in)
+                storeDataToStorage(
+                    context,
+                    Constants.expires_at,
+                    convertToExpiresInToAt(
+                        LocalDateTime.now(),
+                        accessTokenResult!!.expires_in
+                    )
+                )
+                // Store refresh token
+                storeDataToStorage(
+                    context,
+                    Constants.refresh_token,
+                    accessTokenResult!!.refresh_token
+                )
+            }
+
+        }
 
     }
 
     // Refresh access token
     fun refreshAccessToken(context: Context) {
-        // read refresh token from storage
-        var refreshToken = readDataFromStorage(context, Constants.refresh_token)
-        // create Authorization header
-        val header = createAuthorizationHeader(context)
 
-        val accessTokenResult = apiRepository.refreshAccessToken(context, refreshToken, header)
+        runBlocking {
 
-        // Store access token
-        storeDataToStorage(context, Constants.access_token, accessTokenResult!!.access_token)
-        // Store expires_at (converted from expires_in)
-        storeDataToStorage(
-            context,
-            Constants.expires_at,
-            convertToExpiresInToAt(
-                LocalDateTime.now(),
-                accessTokenResult!!.expires_in
-            )
-        )
+            launch(context = Dispatchers.IO) {
+
+                // read refresh token from storage
+                var refreshToken = readDataFromStorage(context, Constants.refresh_token)
+
+                val accessTokenResult =
+                    apiRepository.refreshAccessToken(context, refreshToken)
+
+                // Store access token
+                storeDataToStorage(
+                    context,
+                    Constants.access_token,
+                    accessTokenResult!!.access_token
+                )
+                // Store expires_at (converted from expires_in)
+                storeDataToStorage(
+                    context,
+                    Constants.expires_at,
+                    convertToExpiresInToAt(
+                        LocalDateTime.now(),
+                        accessTokenResult!!.expires_in
+                    )
+                )
+
+            }
+        }
     }
 
     // Store data to local storage
@@ -89,9 +128,34 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
         val accessToken = readDataFromStorage(context, Constants.access_token)
         // return authorization header
         return mapOf(
-            Headers.AUTHORIZATION to accessToken
+            Headers.AUTHORIZATION to "Bearer $accessToken"
         )
     }
+
+    // Check the validity of access token and refresh it if expired
+    fun checkAccessToken(context: Context){
+        if(!isAccessTokenValid(context, LocalDateTime.now(), Constants.margin_seconds))        {
+            refreshAccessToken(context)
+        }
+    }
+
+    // Get the User's Currently Playing Track
+    fun getCurrentlyPlayingTrack(context: Context): CurrentlyPlayingObject {
+        var ret = CurrentlyPlayingObject()
+        runBlocking {
+            launch(context = Dispatchers.IO) {
+                // check the access token
+                checkAccessToken(context)
+                // create authorization header
+                val authHeader = createAuthorizationHeader(context)
+                // call repo's function
+                ret = apiRepository.getCurrentlyPlayingTrack(context, authHeader)
+            }
+
+        }
+        return ret
+    }
+
 
 
 

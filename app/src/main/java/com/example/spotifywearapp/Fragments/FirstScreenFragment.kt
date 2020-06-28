@@ -50,11 +50,11 @@ class FirstScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // If the refresh token is found, navigate to Home.
-//        val refToken = authTokenVM.readDataFromStorage(requireContext(), Constants.refresh_token)
-//        if(!refToken.isNullOrEmpty()){
-//            val navController = findNavController()
-//            navController.navigate(R.id.homeScreenFragment)
-//        }
+        val refToken = appVM.readDataFromStorage(requireContext(), Constants.refresh_token)
+        if(!refToken.isNullOrEmpty()){
+            val navController = findNavController()
+            navController.navigate(R.id.homeScreenFragment)
+        }
 
         // start the auth flow.
         mOAuthClient = OAuthClient.create(requireContext())
@@ -112,6 +112,9 @@ class FirstScreenFragment : Fragment() {
             // Store Authorization Code to storage
             appVM.storeDataToStorage(requireContext(),
                 Constants.authorization_code, authorizationCode)
+
+            // get access token
+            appVM.getNewAccessToken(requireContext())
 
             if(appVM.hasAuthorizationCode(requireContext())){
                 val navController = findNavController()

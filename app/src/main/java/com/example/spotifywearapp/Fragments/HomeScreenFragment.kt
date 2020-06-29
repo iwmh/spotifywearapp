@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.ViewModels.AppViewModel
@@ -51,14 +52,13 @@ class HomeScreenFragment : Fragment() {
 
         // get each view
         val artistView = view.findViewById<TextView>(R.id.artist_name)
-        val albumView = view.findViewById<TextView>(R.id.album_name)
         val trackView = view.findViewById<TextView>(R.id.track_name)
         val imageView = view.findViewById<ImageView>(R.id.track_image)
 
         // set info to the views
         artistView.text = if(playing.item.artists.count() == 0) "" else playing.item.artists.first().name
-        albumView.text = playing.item.album.name
         trackView.text = playing.item.name
+        Glide.with(this).load(playing.item.album.images[1].url).into(imageView)
 
     }
 

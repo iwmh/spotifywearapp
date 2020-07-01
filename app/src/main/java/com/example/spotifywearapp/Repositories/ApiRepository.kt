@@ -15,4 +15,9 @@ interface  ApiRepository{
     // Get the User's Currently Playing Track
     suspend fun getCurrentlyPlayingTrack(context: Context, authHeader: Map<String, String>): CurrentlyPlayingObject
 
+    /*
+     temporary impl
+     */
+    suspend fun addTracksToPlaylist(context: Context, authHeader: Map<String, String>, playlistIdFav: String, tracks: Array<String>): Int
+
 }

@@ -2,15 +2,20 @@ package com.example.spotifywearapp.ViewModels
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.spotifywearapp.Models.Secrets
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.Repositories.ApiRepository
 import com.example.spotifywearapp.Repositories.StorageRepository
 import com.example.spotifywearapp.Utils.Constants
 import com.example.spotifywearapp.Utils.convertToExpiresInToAt
+import com.example.spotifywearapp.Utils.getJsonDataFromAsset
 import com.github.kittinunf.fuel.core.Headers
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
+import android.os.Vibrator;
 
 class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
 
@@ -157,6 +162,45 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
     }
 
 
+    fun storeTargetPlaylistId(context: Context){
+        // * temporary implementation
+        val jsonFileString = getJsonDataFromAsset(
+            context,
+            "secrets.json"
+        )
+        val gson = Gson()
+        val secretsType = object : TypeToken<Secrets>(){}.type
+        val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
+        storeDataToStorage(
+            context,
+            "playlist_id_fav",
+            secrets.playlist_id_fav
+        )
+        // * temporary implementation
+
+    }
+
+    /*
+        temporary implementaion
+     */
+    fun addFavPlaylist(context: Context, tracks: Array<String>): Int{
+
+        var ret = 0
+        runBlocking {
+            launch(context = Dispatchers.IO) {
+                val playlist_id_fav = readDataFromStorage(context, "playlist_id_fav")
+
+                // create authorization header
+                val authHeader = createAuthorizationHeader(context)
+                // call repo's function
+                ret = apiRepository.addTracksToPlaylist(context, authHeader, playlist_id_fav, tracks)
+            }
+
+        }
+
+        return ret
+
+    }
 
 
 

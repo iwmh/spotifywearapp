@@ -9,9 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.spotifywearapp.Models.Secrets
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.R
+import com.example.spotifywearapp.Utils.getJsonDataFromAsset
 import com.example.spotifywearapp.ViewModels.AppViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_home_screen.view.*
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.android.inject
@@ -38,6 +42,8 @@ class HomeScreenFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        appVM.storeTargetPlaylistId(requireContext())
+
         // get currently playin track info
         // when the view is created.
         getTrackInfo(view)
@@ -46,19 +52,27 @@ class HomeScreenFragment : Fragment() {
 
     private fun getTrackInfo(view: View){
         // get track info
-        var playing = CurrentlyPlayingObject()
-
-            playing = appVM.getCurrentlyPlayingTrack(requireContext())
+        var playing = appVM.getCurrentlyPlayingTrack(requireContext())
 
         // get each view
         val artistView = view.findViewById<TextView>(R.id.artist_name)
         val trackView = view.findViewById<TextView>(R.id.track_name)
         val imageView = view.findViewById<ImageView>(R.id.track_image)
 
+        var strArray = arrayOf(playing.item.uri)
+
+        view.findViewById<Button>(R.id.addToFav)
+            .setOnClickListener { v ->
+                appVM.addFavPlaylist(requireContext(), strArray)
+            }
+
         // set info to the views
-        artistView.text = if(playing.item.artists.count() == 0) "" else playing.item.artists.first().name
-        trackView.text = playing.item.name
-        Glide.with(this).load(playing.item.album.images[1].url).into(imageView)
+        if(!playing.currently_playing_type.isNullOrEmpty()) {
+            artistView.text =
+                if (playing.item.artists.count() == 0) "" else playing.item.artists.first().name
+            trackView.text = playing.item.name
+            Glide.with(this).load(playing.item.album.images[1].url).into(imageView)
+        }
 
     }
 

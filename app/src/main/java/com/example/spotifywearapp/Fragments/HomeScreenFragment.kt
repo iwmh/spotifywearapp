@@ -1,12 +1,17 @@
 package com.example.spotifywearapp.Fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.VibrationEffect.DEFAULT_AMPLITUDE
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.Models.Secrets
@@ -63,7 +68,12 @@ class HomeScreenFragment : Fragment() {
 
         view.findViewById<Button>(R.id.addToFav)
             .setOnClickListener { v ->
-                appVM.addFavPlaylist(requireContext(), strArray)
+                if(appVM.addFavPlaylist(requireContext(), strArray) == 201){
+                    // vibrate if successful
+                    val vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    val vibrationEffect = VibrationEffect.createOneShot(300, DEFAULT_AMPLITUDE)
+                    vibrator.vibrate(vibrationEffect)
+                }
             }
 
         // set info to the views

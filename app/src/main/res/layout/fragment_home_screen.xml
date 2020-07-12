@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#070707"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -23,18 +24,10 @@
 
                 <ImageView
                     android:id="@+id/track_image"
-                    android:layout_width="141dp"
-                    android:layout_height="89dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
                     android:layout_gravity="bottom"
                     tools:src="@tools:sample/avatars" />
-
-                <Button
-                    android:id="@+id/addToFav"
-                    android:layout_width="wrap_content"
-                    android:layout_height="83dp"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:text="Button" />
 
             </LinearLayout>
 
@@ -43,14 +36,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:scrollHorizontally="true"
                 android:text="TextView"
-                android:textSize="28sp" />
+                android:textColor="@color/complicationDrawable_textColor"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/artist_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:scrollHorizontally="true"
                 android:text="TextView"
                 android:textSize="20sp" />
 

@@ -49,7 +49,7 @@ class HomeScreenFragment : Fragment() {
 
         appVM.storeTargetPlaylistId(requireContext())
 
-        // get currently playin track info
+        // get currently playing track info
         // when the view is created.
         getTrackInfo(view)
 
@@ -66,11 +66,17 @@ class HomeScreenFragment : Fragment() {
 
         var strArray = arrayOf(playing.item.uri)
 
-        view.findViewById<Button>(R.id.addToFav)
+        // Click Image to add a track to playlist
+        view.findViewById<ImageView>(R.id.track_image)
             .setOnClickListener { v ->
+                val vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+                // Vibrate shortly when clicked
+                val vibrationEffect = VibrationEffect.createOneShot(80, DEFAULT_AMPLITUDE)
+                vibrator.vibrate(vibrationEffect)
+
                 if(appVM.addFavPlaylist(requireContext(), strArray) == 201){
-                    // vibrate if successful
-                    val vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    // vibrate (a little bit longer) if successful
                     val vibrationEffect = VibrationEffect.createOneShot(300, DEFAULT_AMPLITUDE)
                     vibrator.vibrate(vibrationEffect)
                 }
@@ -78,8 +84,11 @@ class HomeScreenFragment : Fragment() {
 
         // set info to the views
         if(!playing.currently_playing_type.isNullOrEmpty()) {
-            artistView.text =
-                if (playing.item.artists.count() == 0) "" else playing.item.artists.first().name
+                if (playing.item.artists.count() == 0){
+                    artistView.text = ""
+                } else {
+                    artistView.text = playing.item.artists.first().name
+                }
             trackView.text = playing.item.name
             Glide.with(this).load(playing.item.album.images[1].url).into(imageView)
         }

@@ -33,23 +33,25 @@
 
             <TextView
                 android:id="@+id/track_name"
-                android:layout_width="match_parent"
+                android:layout_width="153dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:autoText="false"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
-                android:text="TextView"
+                android:singleLine="true"
                 android:textColor="@color/complicationDrawable_textColor"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/artist_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:text="TextView"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </FrameLayout>

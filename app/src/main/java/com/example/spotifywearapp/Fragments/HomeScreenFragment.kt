@@ -91,6 +91,8 @@ class HomeScreenFragment : Fragment() {
                 }
             trackView.text = playing.item.name
             Glide.with(this).load(playing.item.album.images[1].url).into(imageView)
+        }else{
+            trackView.text = "No Track Playing"
         }
 
     }

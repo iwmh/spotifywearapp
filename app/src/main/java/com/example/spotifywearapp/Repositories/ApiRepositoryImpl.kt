@@ -101,6 +101,7 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
 
     // Get the User's Currently Playing Track
     override suspend fun getCurrentlyPlayingTrack(context: Context, authHeader: Map<String, String>): CurrentlyPlayingObject {
+
         var ret = CurrentlyPlayingObject()
 
         // Request

@@ -145,20 +145,13 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
     }
 
     // Get the User's Currently Playing Track
-    fun getCurrentlyPlayingTrack(context: Context): CurrentlyPlayingObject {
-        var ret = CurrentlyPlayingObject()
-        runBlocking {
-            launch(context = Dispatchers.IO) {
-                // check the access token
-                checkAccessToken(context)
-                // create authorization header
-                val authHeader = createAuthorizationHeader(context)
-                // call repo's function
-                ret = apiRepository.getCurrentlyPlayingTrack(context, authHeader)
-            }
-
-        }
-        return ret
+    suspend fun getCurrentlyPlayingTrack(context: Context): CurrentlyPlayingObject {
+        // check the access token
+        checkAccessToken(context)
+        // create authorization header
+        val authHeader = createAuthorizationHeader(context)
+        // call repo's function
+        return apiRepository.getCurrentlyPlayingTrack(context, authHeader)
     }
 
 

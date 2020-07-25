@@ -9,27 +9,18 @@ import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.spotifywearapp.Models.Secrets
-import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.R
-import com.example.spotifywearapp.Utils.getJsonDataFromAsset
 import com.example.spotifywearapp.ViewModels.AppViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_home_screen.view.*
+import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
-import org.w3c.dom.Text
-import kotlinx.coroutines.async as async
 
 
 class HomeScreenFragment : Fragment() {
@@ -73,6 +64,11 @@ class HomeScreenFragment : Fragment() {
             val trackView = view.findViewById<TextView>(R.id.track_name)
             val imageView = view.findViewById<ImageView>(R.id.track_image)
 
+            // get shimmer views
+            val shimmerImageView = view.findViewById<ImageView>(R.id.shimmer_image_view) as ShimmerFrameLayout
+            val shimmerTrackView = view.findViewById<TextView>(R.id.shimmer_track_view) as ShimmerFrameLayout
+            val shimmerArtistView = view.findViewById<TextView>(R.id.shimmer_artist_view) as ShimmerFrameLayout
+
             var strArray = arrayOf(playing.item.uri)
 
             // Click Image to add a track to playlist
@@ -108,6 +104,11 @@ class HomeScreenFragment : Fragment() {
             imageView.setBackgroundColor(Color.TRANSPARENT)
             trackView.setBackgroundColor(Color.TRANSPARENT)
             artistView.setBackgroundColor(Color.TRANSPARENT)
+
+            // Clear the shimmer
+            shimmerImageView.hideShimmer()
+            shimmerTrackView.hideShimmer()
+            shimmerArtistView.hideShimmer()
 
         }
 

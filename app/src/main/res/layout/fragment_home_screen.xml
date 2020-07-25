@@ -23,41 +23,65 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/track_image"
-                    android:layout_width="113dp"
-                    android:layout_height="109dp"
-                    android:layout_gravity="bottom"
-                    android:background="#9FA29F9F"
-                    tools:src="@tools:sample/avatars" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageView
+                        android:id="@+id/track_image"
+                        android:layout_width="113dp"
+                        android:layout_height="109dp"
+                        android:layout_gravity="bottom"
+                        android:background="#9FA29F9F"
+                        tools:src="@tools:sample/avatars" />
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/track_name"
-                android:layout_width="165dp"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_track_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:autoText="false"
-                android:background="#9FA29F9F"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:textColor="@color/complicationDrawable_textColor"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                >
 
-            <TextView
-                android:id="@+id/artist_name"
-                android:layout_width="104dp"
+                <TextView
+                    android:id="@+id/track_name"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:autoText="false"
+                    android:background="#9FA29F9F"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/complicationDrawable_textColor"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_artist_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#9FA29F9F"
-                android:gravity="center"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:textSize="18sp" />
+                >
+
+                <TextView
+                    android:id="@+id/artist_name"
+                    android:layout_width="104dp"
+                    android:layout_height="wrap_content"
+                    android:background="#9FA29F9F"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:textSize="18sp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </LinearLayout>
     </FrameLayout>

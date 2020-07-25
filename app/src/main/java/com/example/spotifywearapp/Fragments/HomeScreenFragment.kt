@@ -1,6 +1,7 @@
 package com.example.spotifywearapp.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.VibrationEffect.DEFAULT_AMPLITUDE
@@ -102,6 +103,11 @@ class HomeScreenFragment : Fragment() {
             } else {
                 trackView.text = "No Track Playing"
             }
+
+            // Clear the background color
+            imageView.setBackgroundColor(Color.TRANSPARENT)
+            trackView.setBackgroundColor(Color.TRANSPARENT)
+            artistView.setBackgroundColor(Color.TRANSPARENT)
 
         }
 

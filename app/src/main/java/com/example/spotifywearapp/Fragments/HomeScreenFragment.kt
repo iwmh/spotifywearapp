@@ -2,10 +2,13 @@ package com.example.spotifywearapp.Fragments
 
 import android.content.Context
 import android.graphics.Color
+import android.icu.util.Calendar
+import android.icu.util.LocaleData
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +66,11 @@ class HomeScreenFragment : Fragment() {
             val artistView = view.findViewById<TextView>(R.id.artist_name)
             val trackView = view.findViewById<TextView>(R.id.track_name)
             val imageView = view.findViewById<ImageView>(R.id.track_image)
+            val currentTimeView = view.findViewById<TextView>(R.id.current_time)
+
+            // set current time
+            var currentTime = DateFormat.format("HH:mm", Calendar.getInstance().time)
+            currentTimeView.text = currentTime
 
             // get shimmer views
             val shimmerImageView = view.findViewById<ImageView>(R.id.shimmer_image_view) as ShimmerFrameLayout
@@ -99,6 +107,8 @@ class HomeScreenFragment : Fragment() {
             } else {
                 trackView.text = "No Track Playing"
             }
+
+
 
             // Clear the background color
             imageView.setBackgroundColor(Color.TRANSPARENT)

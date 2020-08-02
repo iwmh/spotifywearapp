@@ -1,6 +1,7 @@
 package com.example.spotifywearapp.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.icu.util.LocaleData
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
+import android.support.wearable.activity.ConfirmationActivity
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -92,6 +94,13 @@ class HomeScreenFragment : Fragment() {
                         // vibrate (a little bit longer) if successful
                         val vibrationEffect = VibrationEffect.createOneShot(300, DEFAULT_AMPLITUDE)
                         vibrator.vibrate(vibrationEffect)
+
+                        // start confirmation activity
+                        val intent = Intent(context, ConfirmationActivity::class.java).apply {
+                            putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION)
+                            putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Track Added")
+                        }
+                        startActivity(intent)
                     }
                 }
 
@@ -107,8 +116,6 @@ class HomeScreenFragment : Fragment() {
             } else {
                 trackView.text = "No Track Playing"
             }
-
-
 
             // Clear the background color
             imageView.setBackgroundColor(Color.TRANSPARENT)

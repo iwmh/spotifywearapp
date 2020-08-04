@@ -2,9 +2,10 @@ package com.example.spotifywearapp.Fragments
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.icu.util.Calendar
-import android.icu.util.LocaleData
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.VibrationEffect.DEFAULT_AMPLITUDE
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.ViewModels.AppViewModel
@@ -32,6 +34,8 @@ class HomeScreenFragment : Fragment() {
 
     // Lazy injected AppViewModel
     private val appVM : AppViewModel by inject()
+
+    private lateinit var wearableNavigationDrawer: WearableNavigationDrawerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,11 +53,42 @@ class HomeScreenFragment : Fragment() {
 
         appVM.storeTargetPlaylistId(requireContext())
 
+        // Top navigation drawer
+        wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
+        wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
+        // Peeks navigation drawer on the top.
+        wearableNavigationDrawer.controller.peekDrawer()
+
+
         // get currently playing track info
         // when the view is created.
         getTrackInfo(view)
 
     }
+
+
+    private class NavigationAdapter(private val requireContext: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
+        override fun getItemText(pos: Int): CharSequence {
+            return ""
+        }
+
+        override fun getItemDrawable(pos: Int): Drawable {
+            val resources: Resources = requireContext.getResources()
+            val resourceId: Int = resources.getIdentifier(
+                "placeholder", "drawable",
+                requireContext.getPackageName()
+            )
+            return resources.getDrawable(resourceId)
+        }
+
+        override fun getCount(): Int {
+            return 1
+        }
+
+    }
+
+
+
 
     private fun getTrackInfo(view: View){
 
@@ -132,3 +167,6 @@ class HomeScreenFragment : Fragment() {
     }
 
 }
+
+
+

@@ -59,13 +59,11 @@ class HomeScreenFragment : Fragment() {
         // Peeks navigation drawer on the top.
         wearableNavigationDrawer.controller.peekDrawer()
 
-
         // get currently playing track info
         // when the view is created.
         getTrackInfo(view)
 
     }
-
 
     private class NavigationAdapter(private val requireContext: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
         override fun getItemText(pos: Int): CharSequence {
@@ -86,9 +84,6 @@ class HomeScreenFragment : Fragment() {
         }
 
     }
-
-
-
 
     private fun getTrackInfo(view: View){
 

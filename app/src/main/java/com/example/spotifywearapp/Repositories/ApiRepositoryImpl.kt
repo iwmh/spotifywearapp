@@ -7,7 +7,6 @@ import com.example.spotifywearapp.Models.Secrets
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.Models.WebAPI.SnapshotId
 import com.example.spotifywearapp.Utils.Constants
-import com.example.spotifywearapp.Utils.createAuthorizationHeaderForAccessToken
 import com.example.spotifywearapp.Utils.getSecrets
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
@@ -26,26 +25,24 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         ↓
         ③ getting an access token from the refresh token
      */
-    override suspend fun getNewAccessToken(context: Context, authCode: String): AccessTokenResponse {
+    override suspend fun exchangeCodeForAccessToken(context: Context, authCode: String, code_verifier: String): AccessTokenResponse {
 
         var ret =  AccessTokenResponse("","","",0,"")
 
-        // get secrets
-        val secrets: Secrets =
-            getSecrets(context)
+        // get secrets from json file
+        val secrets: Secrets = getSecrets(context)
 
-        // set client id and secrets
+        var client_id = secrets.client_id
         var redirectUrl = secrets.redirect_url
 
         // Request Body
         val param = listOf(
+            "client_id" to client_id,
             "grant_type" to "authorization_code",
             "code" to authCode,
-            "redirect_uri" to redirectUrl
+            "redirect_uri" to redirectUrl,
+            "code_verifier" to code_verifier
         )
-
-        // Request Header
-        val header = createAuthorizationHeaderForAccessToken(context)
 
         // Request
         val response = Fuel.post(
@@ -53,7 +50,6 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
                 param
         )
         .header(Headers.CONTENT_TYPE, "application/x-www-form-urlencoded")
-        .header(header)
         .awaitResponseResult(AccessTokenResponse.Deserializer())
             var (accessTokenResult, err) = response.third
 
@@ -67,18 +63,24 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         return ret
     }
 
+    /**
+     * Refresh token
+     */
     override suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse{
 
         var ret =  AccessTokenResponse("","","",0,"")
 
+        // get secrets from json file
+        val secrets: Secrets = getSecrets(context)
+
+        var client_id = secrets.client_id
+
         // Request Body
         val param = listOf(
             "grant_type" to "refresh_token",
-            "refresh_token" to refreshToken
+            "refresh_token" to refreshToken,
+            "client_id" to client_id
         )
-
-        // Request Header
-        val header = createAuthorizationHeaderForAccessToken(context)
 
         // Request
         val response = Fuel.post(
@@ -86,7 +88,6 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
             param
         )
         .header(Headers.CONTENT_TYPE, "application/x-www-form-urlencoded")
-        .header(header)
         .awaitResponseResult(AccessTokenResponse.Deserializer())
         var (accessTokenResult, err) = response.third
 

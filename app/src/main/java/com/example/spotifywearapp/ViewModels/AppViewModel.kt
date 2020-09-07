@@ -15,7 +15,6 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
-import android.os.Vibrator;
 
 class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
 
@@ -29,16 +28,16 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
         job.cancel()
     }
 
-    // Newly obtain the access token
-    fun getNewAccessToken(context: Context) {
+    /**
+     * Exchange the authorization code for an access token (and a refresh token)
+     */
+    fun exchangeCodeForAccessToken(context: Context, authCode: String, code_verifier: String) {
         runBlocking {
 
             launch(context = Dispatchers.IO) {
 
-                // read auth code from storage
-                var authCode = readDataFromStorage(context, Constants.authorization_code)
-
-                var accessTokenResult = apiRepository.getNewAccessToken(context, authCode)
+                // exchange code for token
+                var accessTokenResult = apiRepository.exchangeCodeForAccessToken(context, authCode, code_verifier)
 
                 // Store access token
                 storeDataToStorage(

@@ -7,7 +7,7 @@ import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
 interface  ApiRepository{
 
     // Newly obtain the access token
-    suspend fun getNewAccessToken(context: Context, authCode: String): AccessTokenResponse?
+    suspend fun exchangeCodeForAccessToken(context: Context, authCode: String, code_verifier: String): AccessTokenResponse?
 
     // Refresh the access token
     suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse

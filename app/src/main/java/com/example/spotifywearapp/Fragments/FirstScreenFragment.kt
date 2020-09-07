@@ -15,6 +15,7 @@ import com.example.spotifywearapp.ViewModels.AppViewModel
 import com.example.spotifywearapp.Utils.Constants
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.Models.Secrets
+import com.example.spotifywearapp.Utils.base64UrlEncode
 import com.example.spotifywearapp.Utils.getSecrets
 import org.koin.android.ext.android.inject
 
@@ -27,11 +28,14 @@ class FirstScreenFragment : Fragment() {
     // redirect to this URL intercepted by the Android Wear companion app after completing the
     // auth code exchange.
     private var HTTP_REDIRECT_URL = ""
-
     private var CLIENT_ID = ""
-    private var CLIENT_SECRET = ""
-
     private val SCOPES = "user-modify-playback-state user-library-modify playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-read-currently-playing"
+    private var CODE_VERIFIER = ""
+    private var CODE_CHALLENGE = ""
+    private val random_string_source = "abcdefghijklmnopqrstuvwxfzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_.-~"
+    private var STATE = ""
+
+    private lateinit var HASHED_CODE_VERIFIER : ByteArray
 
     private var mOAuthClient: OAuthClient? = null
 
@@ -56,6 +60,14 @@ class FirstScreenFragment : Fragment() {
             navController.navigate(R.id.homeScreenFragment)
         }
 
+        // create the code verifier
+        for(x in 0 .. 127) CODE_VERIFIER += random_string_source.random()
+        // create the code challenger from code verifier
+        CODE_CHALLENGE = base64UrlEncode(CODE_VERIFIER)
+
+        // calculate the status
+        for(x in 0 .. 127) STATE += random_string_source.random()
+
         // start the auth flow.
         mOAuthClient = OAuthClient.create(requireContext())
 
@@ -65,7 +77,6 @@ class FirstScreenFragment : Fragment() {
 
         // set client id and secrets
         this.CLIENT_ID = secrets.client_id
-        this.CLIENT_SECRET = secrets.client_secret
         this.HTTP_REDIRECT_URL = secrets.redirect_url
 
         view.findViewById<Button>(R.id.btn_next_screen)
@@ -84,14 +95,18 @@ class FirstScreenFragment : Fragment() {
     fun onClickStartOAuth2Flow(view: View?) {
         val url: String
 
+        // Build the authorization URI
         val builder = Uri.Builder()
         builder.scheme("https")
             .authority("accounts.spotify.com")
             .appendPath("authorize")
-            .appendQueryParameter("response_type", "code")
             .appendQueryParameter("client_id", CLIENT_ID)
-            .appendQueryParameter("scope", Uri.encode(SCOPES))
+            .appendQueryParameter("response_type", "code")
             .appendQueryParameter("redirect_uri", HTTP_REDIRECT_URL)
+            .appendQueryParameter("code_challenge_method","S256")
+            .appendQueryParameter("code_challenge",CODE_CHALLENGE)
+            .appendQueryParameter("state", STATE)
+            .appendQueryParameter("scope", Uri.encode(SCOPES))
 
         url = builder.toString()
 
@@ -106,17 +121,22 @@ class FirstScreenFragment : Fragment() {
         }
 
         override fun onAuthorizationResponse(requestUrl: Uri?, responseUrl: Uri?) {
+            // get the state value
+            val state = responseUrl!!.getQueryParameter("state")
+            // check if they match
+            if(state != STATE){
+                throw  Exception("Detected mismatch with state values")
+            }
+            
             // get Authorization Code from URL
-            var authorizationCode = responseUrl!!.getQueryParameter("code")
-
-            // Store Authorization Code to storage
-            appVM.storeDataToStorage(requireContext(),
-                Constants.authorization_code, authorizationCode)
+            val authorizationCode = responseUrl!!.getQueryParameter("code")
 
             // get access token
-            appVM.getNewAccessToken(requireContext())
+            appVM.exchangeCodeForAccessToken(requireContext(), authorizationCode, CODE_VERIFIER)
 
-            if(appVM.hasAuthorizationCode(requireContext())){
+            // If the refresh token is found, navigate to Home.
+            val refToken = appVM.readDataFromStorage(requireContext(), Constants.refresh_token)
+            if(!refToken.isNullOrEmpty()){
                 val navController = findNavController()
                 navController.navigate(R.id.homeScreenFragment)
             }

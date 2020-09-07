@@ -94,6 +94,12 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
                         accessTokenResult!!.expires_in
                     )
                 )
+                // Store refresh token
+                storeDataToStorage(
+                    context,
+                    Constants.refresh_token,
+                    accessTokenResult!!.refresh_token
+                )
 
             }
         }
@@ -107,11 +113,6 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
     // Read data from local storage
     fun readDataFromStorage(context: Context, key: String): String{
         return storageRepository.readDataFromStorage(context, key)
-    }
-
-    // See if the device has an authorization code
-    fun hasAuthorizationCode(context: Context): Boolean{
-        return !storageRepository.readDataFromStorage(context, Constants.authorization_code).isNullOrBlank()
     }
 
     // Check if the access token is valid or not

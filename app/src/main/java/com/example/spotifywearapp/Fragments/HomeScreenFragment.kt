@@ -32,7 +32,6 @@ import org.koin.android.ext.android.inject
 
 
 class HomeScreenFragment : Fragment(),
-                           MenuItem.OnMenuItemClickListener,
                            WearableNavigationDrawerView.OnItemSelectedListener {
 
     // Lazy injected AppViewModel
@@ -60,12 +59,23 @@ class HomeScreenFragment : Fragment(),
         wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
         wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
 
+        wearableNavigationDrawer.addOnItemSelectedListener(this)
+
         // get currently playing track info
         // when the view is created.
         getTrackInfo(view)
 
     }
 
+    // on item selected
+    override fun onItemSelected(pos: Int) {
+        when(pos){
+            0 -> ""
+            1 -> ""
+            2 -> ""
+            else -> ""
+        }
+    }
 
 
     private class NavigationAdapter(private val requireContext: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
@@ -193,13 +203,6 @@ class HomeScreenFragment : Fragment(),
 
     }
 
-    override fun onMenuItemClick(p0: MenuItem?): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onItemSelected(pos: Int) {
-        TODO("Not yet implemented")
-    }
 
 }
 

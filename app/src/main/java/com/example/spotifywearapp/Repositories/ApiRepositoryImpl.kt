@@ -66,7 +66,7 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
     /**
      * Refresh token
      */
-    override suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse{
+    override suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse? {
 
         var ret =  AccessTokenResponse("","","",0,"")
 
@@ -93,11 +93,7 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
 
         // TODO: implementation of the flow for the err
 
-        if (accessTokenResult != null) {
-            ret = accessTokenResult
-        }
-
-        return ret
+        return accessTokenResult
     }
 
     // Get the User's Currently Playing Track

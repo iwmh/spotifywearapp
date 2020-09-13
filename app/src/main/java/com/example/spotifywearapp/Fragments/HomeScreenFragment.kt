@@ -13,6 +13,7 @@ import android.os.Vibrator
 import android.support.wearable.activity.ConfirmationActivity
 import android.text.format.DateFormat
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -30,7 +31,9 @@ import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 
-class HomeScreenFragment : Fragment() {
+class HomeScreenFragment : Fragment(),
+                           MenuItem.OnMenuItemClickListener,
+                           WearableNavigationDrawerView.OnItemSelectedListener {
 
     // Lazy injected AppViewModel
     private val appVM : AppViewModel by inject()
@@ -56,8 +59,6 @@ class HomeScreenFragment : Fragment() {
         // Top navigation drawer
         wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
         wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
-        // Peeks navigation drawer on the top.
-        wearableNavigationDrawer.controller.peekDrawer()
 
         // get currently playing track info
         // when the view is created.
@@ -65,25 +66,53 @@ class HomeScreenFragment : Fragment() {
 
     }
 
+
+
     private class NavigationAdapter(private val requireContext: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
         override fun getItemText(pos: Int): CharSequence {
-            return ""
+            when(pos){
+                0 -> return "playlist"
+                1 -> return "settings"
+                2 -> return "shuffle"
+                else -> return ""
+            }
         }
 
         override fun getItemDrawable(pos: Int): Drawable {
             val resources: Resources = requireContext.getResources()
-            val resourceId: Int = resources.getIdentifier(
-                "placeholder", "drawable",
-                requireContext.getPackageName()
-            )
-            return resources.getDrawable(resourceId)
+            var resourceId: Int = 0
+            when(pos) {
+                0 -> resourceId = resources.getIdentifier(
+                    "ic_list_24px", "drawable",
+                    requireContext.getPackageName()
+                )
+
+                1 -> resourceId = resources.getIdentifier(
+                    "ic_settings_24px", "drawable",
+                    requireContext.getPackageName()
+                )
+
+                2 -> resourceId = resources.getIdentifier(
+                    "ic_shuffle_24px", "drawable",
+                    requireContext.getPackageName()
+                )
+                else -> resourceId = resources.getIdentifier(
+                    "placeholder", "drawable",
+                    requireContext.getPackageName()
+                )
+            }
+            var item = resources.getDrawable(resourceId)
+            item.setTint(-1)
+            return item
+
         }
 
         override fun getCount(): Int {
-            return 1
+            return 3
         }
 
     }
+
 
     private fun getTrackInfo(view: View){
 
@@ -127,7 +156,10 @@ class HomeScreenFragment : Fragment() {
 
                         // start confirmation activity
                         val intent = Intent(context, ConfirmationActivity::class.java).apply {
-                            putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION)
+                            putExtra(
+                                ConfirmationActivity.EXTRA_ANIMATION_TYPE,
+                                ConfirmationActivity.SUCCESS_ANIMATION
+                            )
                             putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Track Added")
                         }
                         startActivity(intent)
@@ -159,6 +191,14 @@ class HomeScreenFragment : Fragment() {
 
         }
 
+    }
+
+    override fun onMenuItemClick(p0: MenuItem?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemSelected(pos: Int) {
+        TODO("Not yet implemented")
     }
 
 }

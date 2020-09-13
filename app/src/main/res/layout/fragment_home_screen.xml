@@ -12,8 +12,19 @@
         android:id="@+id/top_navigation_drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey"
-        app:navigationStyle="multiPage" />
+        android:background="@color/black"
+        app:navigationStyle="singlePage">
+
+        <androidx.wear.widget.BoxInsetLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.wear.widget.BoxInsetLayout>
+
+    </androidx.wear.widget.drawer.WearableNavigationDrawerView>
 
     <androidx.wear.widget.BoxInsetLayout
         android:layout_width="match_parent"
@@ -41,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <Space
@@ -56,7 +67,7 @@
                         <ImageView
                             android:id="@+id/track_image"
                             android:layout_width="117dp"
-                            android:layout_height="114dp"
+                            android:layout_height="116dp"
                             android:layout_gravity="bottom"
                             android:background="#9FA29F9F"
                             tools:src="@tools:sample/avatars" />

@@ -10,7 +10,7 @@ interface  ApiRepository{
     suspend fun exchangeCodeForAccessToken(context: Context, authCode: String, code_verifier: String): AccessTokenResponse?
 
     // Refresh the access token
-    suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse
+    suspend fun refreshAccessToken(context: Context, refreshToken: String): AccessTokenResponse?
 
     // Get the User's Currently Playing Track
     suspend fun getCurrentlyPlayingTrack(context: Context, authHeader: Map<String, String>): CurrentlyPlayingObject

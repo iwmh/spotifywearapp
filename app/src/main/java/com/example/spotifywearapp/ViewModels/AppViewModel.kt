@@ -79,27 +79,30 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
                 val accessTokenResult =
                     apiRepository.refreshAccessToken(context, refreshToken)
 
-                // Store access token
-                storeDataToStorage(
-                    context,
-                    Constants.access_token,
-                    accessTokenResult!!.access_token
-                )
-                // Store expires_at (converted from expires_in)
-                storeDataToStorage(
-                    context,
-                    Constants.expires_at,
-                    convertToExpiresInToAt(
-                        LocalDateTime.now(),
-                        accessTokenResult!!.expires_in
+                if(accessTokenResult != null) {
+
+                    // Store access token
+                    storeDataToStorage(
+                        context,
+                        Constants.access_token,
+                        accessTokenResult!!.access_token
                     )
-                )
-                // Store refresh token
-                storeDataToStorage(
-                    context,
-                    Constants.refresh_token,
-                    accessTokenResult!!.refresh_token
-                )
+                    // Store expires_at (converted from expires_in)
+                    storeDataToStorage(
+                        context,
+                        Constants.expires_at,
+                        convertToExpiresInToAt(
+                            LocalDateTime.now(),
+                            accessTokenResult!!.expires_in
+                        )
+                    )
+                    // Store refresh token
+                    storeDataToStorage(
+                        context,
+                        Constants.refresh_token,
+                        accessTokenResult!!.refresh_token
+                    )
+                }
 
             }
         }

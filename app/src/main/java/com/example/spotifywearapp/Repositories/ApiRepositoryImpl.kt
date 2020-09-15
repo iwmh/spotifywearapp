@@ -5,6 +5,7 @@ import android.content.Context
 import com.example.spotifywearapp.Models.AccessTokenResponse
 import com.example.spotifywearapp.Models.Secrets
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
+import com.example.spotifywearapp.Models.WebAPI.Playback
 import com.example.spotifywearapp.Models.WebAPI.SnapshotId
 import com.example.spotifywearapp.Utils.Constants
 import com.example.spotifywearapp.Utils.getSecrets
@@ -149,5 +150,31 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
 
         return response.second.statusCode
     }
+
+
+    // get user's current playback
+    override suspend fun getCurrentPlayback(context: Context, authHeader: Map<String, String>): Playback{
+
+        var ret = Playback()
+
+        // Request
+        val response = Fuel.get(
+            Constants.current_playback
+        )
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .header(authHeader)
+            .awaitResponseResult(Playback.Deserializer())
+        var (playback , err) = response.third
+
+        // TODO: implementation of the flow for the err
+
+        if (playback != null) {
+            ret = playback
+        }
+
+        return ret
+
+    }
+
 
 }

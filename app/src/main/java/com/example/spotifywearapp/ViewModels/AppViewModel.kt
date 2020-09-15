@@ -157,6 +157,15 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
         return apiRepository.getCurrentlyPlayingTrack(context, authHeader)
     }
 
+    // Get the current playback
+    suspend fun getCurrentPlaybacksShuffleState(context: Context): Boolean {
+        // create authorization header
+        val authHeader = createAuthorizationHeader(context)
+        // call repo's function
+        val playback = apiRepository.getCurrentPlayback(context, authHeader)
+        return playback.shuffle_state
+    }
+
 
     fun storeTargetPlaylistId(context: Context){
         // * temporary implementation

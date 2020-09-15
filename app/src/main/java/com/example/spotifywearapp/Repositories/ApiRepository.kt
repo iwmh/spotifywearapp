@@ -3,6 +3,7 @@ package com.example.spotifywearapp.Repositories
 import android.content.Context
 import com.example.spotifywearapp.Models.AccessTokenResponse
 import com.example.spotifywearapp.Models.WebAPI.CurrentlyPlayingObject
+import com.example.spotifywearapp.Models.WebAPI.Playback
 
 interface  ApiRepository{
 
@@ -14,6 +15,9 @@ interface  ApiRepository{
 
     // Get the User's Currently Playing Track
     suspend fun getCurrentlyPlayingTrack(context: Context, authHeader: Map<String, String>): CurrentlyPlayingObject
+
+    // Get the User's Current Playback
+    suspend fun getCurrentPlayback(context: Context, authHeader: Map<String, String>): Playback
 
     /*
      temporary impl

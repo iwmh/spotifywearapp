@@ -13,13 +13,15 @@ import android.os.Vibrator
 import android.support.wearable.activity.ConfirmationActivity
 import android.text.format.DateFormat
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
@@ -39,6 +41,9 @@ class HomeScreenFragment : Fragment(),
 
     private lateinit var wearableNavigationDrawer: WearableNavigationDrawerView
 
+    private lateinit var navController : NavController
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,22 +60,23 @@ class HomeScreenFragment : Fragment(),
 
         appVM.storeTargetPlaylistId(requireContext())
 
-        // Top navigation drawer
-        wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
-        wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
-
-        wearableNavigationDrawer.addOnItemSelectedListener(this)
+        navController = findNavController(view)
 
         // get currently playing track info
         // when the view is created.
         getTrackInfo(view)
 
+        // Initialize top navigation drawer
+        wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
+        wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
+
+        wearableNavigationDrawer.addOnItemSelectedListener(this)
     }
 
     // on item selected
     override fun onItemSelected(pos: Int) {
         when(pos){
-            0 -> ""
+//            0 -> navController.navigate()
             1 -> ""
             2 -> ""
             else -> ""
@@ -78,40 +84,41 @@ class HomeScreenFragment : Fragment(),
     }
 
 
-    private class NavigationAdapter(private val requireContext: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
+    private class NavigationAdapter(private val context: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
         override fun getItemText(pos: Int): CharSequence {
             when(pos){
-                0 -> return "playlist"
-                1 -> return "settings"
-                2 -> return "shuffle"
+                0 -> return "target playlist"
+                1 -> return "shuffle"
+                2 -> return "playlists"
                 else -> return ""
             }
         }
 
         override fun getItemDrawable(pos: Int): Drawable {
-            val resources: Resources = requireContext.getResources()
+            val resources: Resources = context.getResources()
             var resourceId: Int = 0
+            lateinit var item : Drawable
             when(pos) {
-                0 -> resourceId = resources.getIdentifier(
-                    "ic_list_24px", "drawable",
-                    requireContext.getPackageName()
-                )
+                0 -> {
+                    resourceId = resources.getIdentifier(
+                    "ic_playlist_add_check_24px", "drawable",
+                    context.getPackageName())
+                }
+                1 -> {
+                    resourceId = resources.getIdentifier(
+                        "ic_settings_24px", "drawable",
+                        context.getPackageName())
+                }
+                2 -> {
+                    resourceId = resources.getIdentifier(
+                        "ic_playlist_play_24px", "drawable",
+                        context.getPackageName()
+                    )
+                }
 
-                1 -> resourceId = resources.getIdentifier(
-                    "ic_settings_24px", "drawable",
-                    requireContext.getPackageName()
-                )
-
-                2 -> resourceId = resources.getIdentifier(
-                    "ic_shuffle_24px", "drawable",
-                    requireContext.getPackageName()
-                )
-                else -> resourceId = resources.getIdentifier(
-                    "placeholder", "drawable",
-                    requireContext.getPackageName()
-                )
             }
-            var item = resources.getDrawable(resourceId)
+
+            item = resources.getDrawable(resourceId)
             item.setTint(-1)
             return item
 

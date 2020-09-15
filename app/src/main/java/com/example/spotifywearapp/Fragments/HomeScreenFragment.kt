@@ -62,22 +62,22 @@ class HomeScreenFragment : Fragment(),
 
         navController = findNavController(view)
 
-        // get currently playing track info
-        // when the view is created.
-        getTrackInfo(view)
-
         // Initialize top navigation drawer
         wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
         wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
 
         wearableNavigationDrawer.addOnItemSelectedListener(this)
+
+        // get currently playing track info
+        // when the view is created.
+        getTrackInfo(view)
     }
 
     // on item selected
     override fun onItemSelected(pos: Int) {
         when(pos){
-//            0 -> navController.navigate()
-            1 -> ""
+            0 -> ""
+            1 -> navController.navigate(R.id.settingsFragment)
             2 -> ""
             else -> ""
         }

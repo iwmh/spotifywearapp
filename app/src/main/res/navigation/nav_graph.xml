@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeScreenFragment_to_ambientScreenFragment"
             app:destination="@id/ambientScreenFragment" />
+        <action
+            android:id="@+id/action_homeScreenFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/firstScreenFragment"
@@ -31,4 +34,13 @@
         android:name="com.example.spotifywearapp.Fragments.AmbientScreenFragment"
         android:label="fragment_ambient_screen"
         tools:layout="@layout/fragment_ambient_screen" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.spotifywearapp.Fragments.SettingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
+    </fragment>
 </navigation>

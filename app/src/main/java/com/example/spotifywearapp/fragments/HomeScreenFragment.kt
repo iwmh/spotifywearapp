@@ -24,7 +24,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
-import com.example.spotifywearapp.viewmodels.AppViewModel
+import com.example.spotifywearapp.viewmodels.HomeViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ class HomeScreenFragment : Fragment(),
                            WearableNavigationDrawerView.OnItemSelectedListener {
 
     // Lazy injected AppViewModel
-    private val appVM : AppViewModel by inject()
+    private val homeVM : HomeViewModel by inject()
 
     private lateinit var wearableNavigationDrawer: WearableNavigationDrawerView
 
@@ -57,7 +57,7 @@ class HomeScreenFragment : Fragment(),
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        appVM.storeTargetPlaylistId(requireContext())
+        homeVM.storeTargetPlaylistId(requireContext())
 
         navController = findNavController(view)
 
@@ -136,7 +136,7 @@ class HomeScreenFragment : Fragment(),
 
             // get track info
             var playing = withContext(Dispatchers.Default) {
-                appVM.getCurrentlyPlayingTrack(requireContext())
+                homeVM.getCurrentlyPlayingTrack(requireContext())
             }
 
             // get each view
@@ -165,7 +165,7 @@ class HomeScreenFragment : Fragment(),
                     val vibrationEffect = VibrationEffect.createOneShot(80, DEFAULT_AMPLITUDE)
                     vibrator.vibrate(vibrationEffect)
 
-                    if (appVM.addFavPlaylist(requireContext(), strArray) == 201) {
+                    if (homeVM.addFavPlaylist(requireContext(), strArray) == 201) {
                         // vibrate (a little bit longer) if successful
                         val vibrationEffect = VibrationEffect.createOneShot(300, DEFAULT_AMPLITUDE)
                         vibrator.vibrate(vibrationEffect)

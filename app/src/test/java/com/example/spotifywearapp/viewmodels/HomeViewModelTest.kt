@@ -17,13 +17,13 @@ import org.robolectric.RobolectricTestRunner
 import java.time.LocalDateTime
 
 @RunWith(RobolectricTestRunner::class)
-internal class AppViewModelTest: KoinTest {
+internal class HomeViewModelTest: KoinTest {
 
     companion object {
         lateinit var context: Context
         lateinit var apiRepository: ApiRepositoryImpl
         lateinit var storageRepository: StorageRepositoryImpl
-        lateinit var viewModel: AppViewModel
+        lateinit var viewModel: HomeViewModel
     }
 
     // Set up
@@ -36,7 +36,7 @@ internal class AppViewModelTest: KoinTest {
         storageRepository = StorageRepositoryImpl(
             ApplicationProvider.getApplicationContext()
         )
-        viewModel = AppViewModel(apiRepository, storageRepository)
+        viewModel = HomeViewModel(apiRepository, storageRepository)
     }
 
     @org.junit.Test

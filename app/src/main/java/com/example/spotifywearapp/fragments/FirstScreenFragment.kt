@@ -11,18 +11,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.Nullable
 import androidx.navigation.fragment.findNavController
-import com.example.spotifywearapp.viewmodels.AppViewModel
 import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.models.Secrets
 import com.example.spotifywearapp.utils.base64UrlEncode
 import com.example.spotifywearapp.utils.getSecrets
+import com.example.spotifywearapp.viewmodels.FirstViewModel
 import org.koin.android.ext.android.inject
 
 class FirstScreenFragment : Fragment() {
 
     // Lazy injected AppViewModel
-    private val appVM : AppViewModel by inject()
+    private val firstVM : FirstViewModel by inject()
 
     // Note that normally the redirect URL would be your own server, which would in turn
     // redirect to this URL intercepted by the Android Wear companion app after completing the
@@ -34,8 +34,6 @@ class FirstScreenFragment : Fragment() {
     private var CODE_CHALLENGE = ""
     private val random_string_source = "abcdefghijklmnopqrstuvwxfzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_.-~"
     private var STATE = ""
-
-    private lateinit var HASHED_CODE_VERIFIER : ByteArray
 
     private var mOAuthClient: OAuthClient? = null
 
@@ -54,7 +52,7 @@ class FirstScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // If the refresh token is found, navigate to Home.
-        val refToken = appVM.readDataFromStorage(requireContext(), Constants.refresh_token)
+        val refToken = firstVM.readDataFromStorage(requireContext(), Constants.refresh_token)
         if(!refToken.isNullOrEmpty()){
             val navController = findNavController()
             navController.navigate(R.id.homeScreenFragment)
@@ -132,10 +130,10 @@ class FirstScreenFragment : Fragment() {
             val authorizationCode = responseUrl!!.getQueryParameter("code")
 
             // get access token
-            appVM.exchangeCodeForAccessToken(requireContext(), authorizationCode, CODE_VERIFIER)
+            firstVM.exchangeCodeForAccessToken(requireContext(), authorizationCode, CODE_VERIFIER)
 
             // If the refresh token is found, navigate to Home.
-            val refToken = appVM.readDataFromStorage(requireContext(), Constants.refresh_token)
+            val refToken = firstVM.readDataFromStorage(requireContext(), Constants.refresh_token)
             if(!refToken.isNullOrEmpty()){
                 val navController = findNavController()
                 navController.navigate(R.id.homeScreenFragment)

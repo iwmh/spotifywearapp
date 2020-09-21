@@ -16,7 +16,7 @@ import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
 
-class AppViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
+class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
 
     private val job = Job()
 
@@ -26,44 +26,6 @@ class AppViewModel(val apiRepository: ApiRepository, val storageRepository: Stor
     override fun onCleared() {
         super.onCleared()
         job.cancel()
-    }
-
-    /**
-     * Exchange the authorization code for an access token (and a refresh token)
-     */
-    fun exchangeCodeForAccessToken(context: Context, authCode: String, code_verifier: String) {
-        runBlocking {
-
-            launch(context = Dispatchers.IO) {
-
-                // exchange code for token
-                var accessTokenResult = apiRepository.exchangeCodeForAccessToken(context, authCode, code_verifier)
-
-                // Store access token
-                storeDataToStorage(
-                    context,
-                    Constants.access_token,
-                    accessTokenResult!!.access_token
-                )
-                // Store expires_at (converted from expires_in)
-                storeDataToStorage(
-                    context,
-                    Constants.expires_at,
-                    convertToExpiresInToAt(
-                        LocalDateTime.now(),
-                        accessTokenResult!!.expires_in
-                    )
-                )
-                // Store refresh token
-                storeDataToStorage(
-                    context,
-                    Constants.refresh_token,
-                    accessTokenResult!!.refresh_token
-                )
-            }
-
-        }
-
     }
 
     // Refresh access token

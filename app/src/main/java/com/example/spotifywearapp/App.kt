@@ -5,7 +5,8 @@ import com.example.spotifywearapp.repositories.ApiRepository
 import com.example.spotifywearapp.repositories.ApiRepositoryImpl
 import com.example.spotifywearapp.repositories.StorageRepository
 import com.example.spotifywearapp.repositories.StorageRepositoryImpl
-import com.example.spotifywearapp.viewmodels.AppViewModel
+import com.example.spotifywearapp.viewmodels.FirstViewModel
+import com.example.spotifywearapp.viewmodels.HomeViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -39,6 +40,7 @@ class App : Application(){
         }
 
         // Simple Presenter Factory
-        factory { AppViewModel(get(), get()) }
+        factory { HomeViewModel(get(), get()) }
+        factory { FirstViewModel(get(), get()) }
     }
 }

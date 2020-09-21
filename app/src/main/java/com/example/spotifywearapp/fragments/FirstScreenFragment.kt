@@ -37,6 +37,11 @@ class FirstScreenFragment : Fragment() {
 
     private var mOAuthClient: OAuthClient? = null
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mOAuthClient?.destroy()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".Fragments.FirstScreenFragment"
+    tools:context=".fragments.FirstScreenFragment"
     tools:deviceIds="wear">
 
 

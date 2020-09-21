@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
@@ -42,7 +43,6 @@ class HomeScreenFragment : Fragment(),
 
     private lateinit var navController : NavController
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,6 +57,42 @@ class HomeScreenFragment : Fragment(),
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        // get each view
+        val currentTimeView = view?.findViewById<TextView>(R.id.current_time)
+        val imageView = view?.findViewById<ImageView>(R.id.track_image)
+        val trackView = view?.findViewById<TextView>(R.id.track_name)
+        val artistView = view?.findViewById<TextView>(R.id.artist_name)
+
+        // Create the observer which updates the UI.
+        // current time
+        val currentTimeObserver = Observer<String> { newTime ->
+            currentTimeView.text = newTime
+        }
+        homeVM.currentTime.observe(viewLifecycleOwner, currentTimeObserver)
+        // image
+        val imageUrlObserver = Observer<String> { newUrl ->
+            Glide.with(requireContext()).load(newUrl).into(imageView)
+        }
+        homeVM.imageUrl.observe(viewLifecycleOwner, imageUrlObserver)
+        // track name
+        val trackNameObserver= Observer<String> { newTrackName ->
+            trackView.text = newTrackName
+        }
+        homeVM.trackName.observe(viewLifecycleOwner, trackNameObserver)
+        // artist name
+        val artistNameObserver = Observer<String> { newArtistName ->
+            artistView.text = newArtistName
+        }
+        homeVM.artistName.observe(viewLifecycleOwner, artistNameObserver)
+        // shimmer color
+        val shimmerColorObserver = Observer<Int> { newColor ->
+            imageView.setBackgroundColor(newColor)
+            trackView.setBackgroundColor(newColor)
+            artistView.setBackgroundColor(newColor)
+        }
+        homeVM.shimmerColor.observe(viewLifecycleOwner, shimmerColorObserver)
+
+        // ...temporal implementation
         homeVM.storeTargetPlaylistId(requireContext())
 
         navController = findNavController(view)
@@ -64,12 +100,11 @@ class HomeScreenFragment : Fragment(),
         // Initialize top navigation drawer
         wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)
         wearableNavigationDrawer.setAdapter(NavigationAdapter(requireContext()))
-
         wearableNavigationDrawer.addOnItemSelectedListener(this)
 
         // get currently playing track info
         // when the view is created.
-        getTrackInfo(view)
+        getTrackInfo()
     }
 
     // on item selected
@@ -81,7 +116,6 @@ class HomeScreenFragment : Fragment(),
             else -> ""
         }
     }
-
 
     private class NavigationAdapter(private val context: Context) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
         override fun getItemText(pos: Int): CharSequence {
@@ -129,8 +163,9 @@ class HomeScreenFragment : Fragment(),
 
     }
 
+    private fun getTrackInfo(){
 
-    private fun getTrackInfo(view: View){
+        var view = view
 
         viewLifecycleOwner.lifecycleScope.launch {
 
@@ -139,20 +174,14 @@ class HomeScreenFragment : Fragment(),
                 homeVM.getCurrentlyPlayingTrack(requireContext())
             }
 
-            // get each view
-            val artistView = view.findViewById<TextView>(R.id.artist_name)
-            val trackView = view.findViewById<TextView>(R.id.track_name)
-            val imageView = view.findViewById<ImageView>(R.id.track_image)
-            val currentTimeView = view.findViewById<TextView>(R.id.current_time)
-
             // set current time
             var currentTime = DateFormat.format("HH:mm", Calendar.getInstance().time)
-            currentTimeView.text = currentTime
+            homeVM.currentTime.value = currentTime.toString()
 
             // get shimmer views
-            val shimmerImageView = view.findViewById<ImageView>(R.id.shimmer_image_view) as ShimmerFrameLayout
-            val shimmerTrackView = view.findViewById<TextView>(R.id.shimmer_track_view) as ShimmerFrameLayout
-            val shimmerArtistView = view.findViewById<TextView>(R.id.shimmer_artist_view) as ShimmerFrameLayout
+            val shimmerImageView = view?.findViewById(R.id.shimmer_image_view) as ShimmerFrameLayout
+            val shimmerTrackView = view?.findViewById(R.id.shimmer_track_view) as ShimmerFrameLayout
+            val shimmerArtistView = view?.findViewById(R.id.shimmer_artist_view) as ShimmerFrameLayout
 
             var strArray = arrayOf(playing.item.uri)
 
@@ -185,20 +214,18 @@ class HomeScreenFragment : Fragment(),
             // set info to the views
             if (!playing.currently_playing_type.isNullOrEmpty()) {
                 if (playing.item.artists.count() == 0) {
-                    artistView.text = ""
+                    homeVM.artistName.value = ""
                 } else {
-                    artistView.text = playing.item.artists.first().name
+                    homeVM.artistName.value = playing.item.artists.first().name
                 }
-                trackView.text = playing.item.name
-                Glide.with(requireContext()).load(playing.item.album.images[1].url).into(imageView)
+                homeVM.trackName.value = playing.item.name
+                homeVM.imageUrl.value = playing.item.album.images[1].url
             } else {
-                trackView.text = "No Track Playing"
+                homeVM.trackName.value = "No Track Playing"
             }
 
             // Clear the background color
-            imageView.setBackgroundColor(Color.TRANSPARENT)
-            trackView.setBackgroundColor(Color.TRANSPARENT)
-            artistView.setBackgroundColor(Color.TRANSPARENT)
+            homeVM.shimmerColor.value = Color.TRANSPARENT
 
             // Clear the shimmer
             shimmerImageView.hideShimmer()

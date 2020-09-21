@@ -1,6 +1,7 @@
 package com.example.spotifywearapp.viewmodels
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.spotifywearapp.models.Secrets
 import com.example.spotifywearapp.models.WebAPI.CurrentlyPlayingObject
@@ -17,6 +18,23 @@ import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
 
 class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: StorageRepository) : ViewModel(), CoroutineScope{
+
+    // LiveData
+    val currentTime: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val artistName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val imageUrl: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val trackName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+    val shimmerColor: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
 
     private val job = Job()
 

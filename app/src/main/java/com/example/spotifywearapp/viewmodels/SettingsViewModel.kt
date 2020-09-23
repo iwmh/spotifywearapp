@@ -43,17 +43,16 @@ class SettingsViewModel(val apiRepository: ApiRepository, val storageRepository:
     }
 
     // Toggle shuffle mode
-    fun toggleShufflePlayback(context: Context, state: Boolean): Int{
-        var code = 0
-
+    fun toggleShufflePlayback(context: Context, state: Boolean){
         viewModelScope.launch {
             // create authorization header
             val authHeader = createAuthorizationHeader(context)
             // call repo's function
-            code = apiRepository.toggleShufflePlayback(context, authHeader, state)
+            val result = apiRepository.toggleShufflePlayback(context, authHeader, state)
+            if(result) {
+                shuffleMode.postValue(!shuffleMode.value!!)
+            }
         }
-
-        return code
     }
 
     // create authorization header from access token

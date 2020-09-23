@@ -121,7 +121,7 @@ class HomeScreenFragment : Fragment(),
         override fun getItemText(pos: Int): CharSequence {
             when(pos){
                 0 -> return "target playlist"
-                1 -> return "shuffle"
+                1 -> return "settings"
                 2 -> return "playlists"
                 else -> return ""
             }

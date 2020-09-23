@@ -1,7 +1,10 @@
 package com.example.spotifywearapp.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,14 +65,17 @@ class SettingsFragment : Fragment() {
 
     private fun prepareShuffleButton(view: View) {
 
+            // get the current playback in the background
             settingsVM.getCurrentPlaybacksShuffleState(requireContext())
 
             val shuffle = view.findViewById<ImageView>(R.id.shuffle_mode)
+            // set shuffle drawable
             shuffle.apply {
                 setImageResource(R.drawable.ic_shuffle_24px)
             }
 
-            val shuffleModeObserver = Observer<Boolean> { newShuffleMode ->
+        val shuffleModeObserver = Observer<Boolean> { newShuffleMode ->
+
                 var tint: Int = -1
                 tint = if (newShuffleMode) {
                     Color.GREEN
@@ -77,21 +83,24 @@ class SettingsFragment : Fragment() {
                     Color.WHITE
                 }
                 shuffle.drawable.setTint(tint)
+
+
+                // set onClickListener
+                shuffle.setOnClickListener { v ->
+                    val vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    val vibrationEffect = VibrationEffect.createOneShot(150,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                    vibrator.vibrate(vibrationEffect)
+                    settingsVM.toggleShufflePlayback(
+                        requireContext(),
+                        !settingsVM.shuffleMode.value!!
+                    )
+                }
+
             }
 
             settingsVM.shuffleMode.observe(viewLifecycleOwner, shuffleModeObserver)
-
-            shuffle.setOnClickListener { v ->
-                val code = settingsVM.toggleShufflePlayback(
-                    requireContext(),
-                    !settingsVM.shuffleMode.value!!
-                )
-                if (code == 204) {
-                    settingsVM.shuffleMode.value = !settingsVM.shuffleMode.value!!
-                } else {
-                    settingsVM.shuffleMode.value = settingsVM.shuffleMode.value!!
-                }
-            }
 
     }
 }

@@ -20,7 +20,7 @@ interface  ApiRepository{
     fun getCurrentPlayback(context: Context, authHeader: Map<String, String>): Playback
 
     // Toggle Shuffle For User's Playback
-    suspend fun toggleShufflePlayback(context: Context, authHeader: Map<String, String>, state: Boolean): Int
+    suspend fun toggleShufflePlayback(context: Context, authHeader: Map<String, String>, state: Boolean): Boolean
 
     /*
      temporary impl

@@ -12,6 +12,9 @@ import com.example.spotifywearapp.utils.getSecrets
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.awaitResponseResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.withContext
 
 
 class ApiRepositoryImpl(app: Application) : ApiRepository {
@@ -180,24 +183,25 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         context: Context,
         authHeader: Map<String, String>,
         state: Boolean
-    ): Int {
+    ): Boolean{
 
-        var param = listOf(
-            "state" to state
-        )
+        return withContext(Dispatchers.IO) {
 
-        // Request
-        val response = Fuel.put(
-            "https://api.spotify.com/v1/me/player/shuffle",
-            param
-        )
-        .header(Headers.CONTENT_TYPE, "application/json")
-        .header(authHeader)
-        .awaitResponseResult(SnapshotId.Deserializer())
+            var param = listOf(
+                "state" to state
+            )
 
-        // TODO: implementation of the flow for the err
+            // Request
+            val response = Fuel.put(
+                "https://api.spotify.com/v1/me/player/shuffle",
+                param
+            )
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .header(authHeader)
+            .responseObject(SnapshotId.Deserializer())
 
-        return response.second.statusCode
+            response.second.statusCode == 204
+        }
     }
 
 

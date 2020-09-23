@@ -137,15 +137,6 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         return apiRepository.getCurrentlyPlayingTrack(context, authHeader)
     }
 
-    // Get the current playback
-    suspend fun getCurrentPlaybacksShuffleState(context: Context): Boolean {
-        // create authorization header
-        val authHeader = createAuthorizationHeader(context)
-        // call repo's function
-        val playback = apiRepository.getCurrentPlayback(context, authHeader)
-        return playback.shuffle_state
-    }
-
 
     fun storeTargetPlaylistId(context: Context){
         // * temporary implementation
@@ -174,7 +165,6 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         runBlocking {
             launch(context = Dispatchers.IO) {
                 val playlist_id_fav = readDataFromStorage(context, "playlist_id_fav")
-
                 // create authorization header
                 val authHeader = createAuthorizationHeader(context)
                 // call repo's function
@@ -186,7 +176,5 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         return ret
 
     }
-
-
 
 }

@@ -131,8 +131,6 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         tracks: Array<String>
     ): Int {
 
-        var ret = 0
-
         var param = listOf(
             "uris" to tracks.toList().joinToString(",")
         )
@@ -142,18 +140,17 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
             "https://api.spotify.com/v1/playlists/$playlistIdFav/tracks",
             param
         )
-            .header(Headers.CONTENT_TYPE, "application/json")
-            .header(authHeader)
-            .awaitResponseResult(SnapshotId.Deserializer())
+        .header(Headers.CONTENT_TYPE, "application/json")
+        .header(authHeader)
+        .awaitResponseResult(SnapshotId.Deserializer())
 
         // TODO: implementation of the flow for the err
 
         return response.second.statusCode
     }
 
-
     // get user's current playback
-    override suspend fun getCurrentPlayback(context: Context, authHeader: Map<String, String>): Playback{
+    override fun getCurrentPlayback(context: Context, authHeader: Map<String, String>): Playback{
 
         var ret = Playback()
 
@@ -161,9 +158,9 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         val response = Fuel.get(
             Constants.current_playback
         )
-            .header(Headers.CONTENT_TYPE, "application/json")
-            .header(authHeader)
-            .awaitResponseResult(Playback.Deserializer())
+        .header(Headers.CONTENT_TYPE, "application/json")
+        .header(authHeader)
+        .responseObject(Playback.Deserializer())
         var (playback , err) = response.third
 
         // TODO: implementation of the flow for the err
@@ -174,6 +171,33 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
 
         return ret
 
+    }
+
+    /***
+     *
+     */
+    override suspend fun toggleShufflePlayback(
+        context: Context,
+        authHeader: Map<String, String>,
+        state: Boolean
+    ): Int {
+
+        var param = listOf(
+            "state" to state
+        )
+
+        // Request
+        val response = Fuel.put(
+            "https://api.spotify.com/v1/me/player/shuffle",
+            param
+        )
+        .header(Headers.CONTENT_TYPE, "application/json")
+        .header(authHeader)
+        .awaitResponseResult(SnapshotId.Deserializer())
+
+        // TODO: implementation of the flow for the err
+
+        return response.second.statusCode
     }
 
 

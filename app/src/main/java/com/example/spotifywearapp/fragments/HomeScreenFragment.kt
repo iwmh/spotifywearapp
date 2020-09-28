@@ -112,8 +112,7 @@ class HomeScreenFragment : Fragment(),
         when(pos){
             0 -> ""
             1 -> navController.navigate(R.id.settingsFragment)
-            2 -> ""
-            else -> ""
+            2 -> navController.navigate(R.id.playlistsFragment)
         }
     }
 

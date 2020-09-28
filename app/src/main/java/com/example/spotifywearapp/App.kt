@@ -7,6 +7,7 @@ import com.example.spotifywearapp.repositories.StorageRepository
 import com.example.spotifywearapp.repositories.StorageRepositoryImpl
 import com.example.spotifywearapp.viewmodels.FirstViewModel
 import com.example.spotifywearapp.viewmodels.HomeViewModel
+import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 import com.example.spotifywearapp.viewmodels.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -44,5 +45,6 @@ class App : Application(){
         factory { HomeViewModel(get(), get()) }
         factory { FirstViewModel(get(), get()) }
         factory { SettingsViewModel(get(), get())}
+        factory { PlaylistsViewModel(get(), get())}
     }
 }

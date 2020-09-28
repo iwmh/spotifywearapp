@@ -4,9 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.spotifywearapp.models.AccessTokenResponse
 import com.example.spotifywearapp.models.Secrets
-import com.example.spotifywearapp.models.WebAPI.CurrentlyPlayingObject
-import com.example.spotifywearapp.models.WebAPI.Playback
-import com.example.spotifywearapp.models.WebAPI.SnapshotId
+import com.example.spotifywearapp.models.WebAPI.*
 import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.utils.getSecrets
 import com.github.kittinunf.fuel.Fuel
@@ -203,6 +201,31 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
             response.second.statusCode == 204
         }
     }
+
+    // get user's list of playlists
+    override suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): Playlists{
+
+        var ret = Playlists()
+
+        // Request
+        val response = Fuel.get(
+            Constants.list_of_playlists
+        )
+        .header(Headers.CONTENT_TYPE, "application/json")
+        .header(authHeader)
+        .responseObject(Playlists.Deserializer())
+        var (playlists, err) = response.third
+
+        // TODO: implementation of the flow for the err
+
+        if (playlists!= null) {
+            ret = playlists
+        }
+
+        return ret
+
+    }
+
 
 
 }

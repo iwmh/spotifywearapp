@@ -5,7 +5,8 @@ class Constants {
 
         const val access_token_url = "https://accounts.spotify.com/api/token"
         const val currently_playing_object_url = "https://api.spotify.com/v1/me/player/currently-playing"
-        const val current_playback= "https://api.spotify.com/v1/me/player"
+        const val current_playback = "https://api.spotify.com/v1/me/player"
+        const val list_of_playlists = "https://api.spotify.com/v1/me/playlists"
 
         const val authorization_code = "swo_authorization_code"
         const val access_token = "swo_access_token"

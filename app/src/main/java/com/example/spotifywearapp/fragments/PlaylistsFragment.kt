@@ -24,12 +24,10 @@ class PlaylistsFragment : Fragment() {
 
         override fun onSwipeStarted(layout: SwipeDismissFrameLayout) {
             // optional
-            print("started")
         }
 
         override fun onSwipeCanceled(layout: SwipeDismissFrameLayout) {
             // optional
-            print("canceled")
         }
 
         override fun onDismissed(layout: SwipeDismissFrameLayout) {

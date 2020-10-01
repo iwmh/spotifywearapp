@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.spotifywearapp.models.AccessTokenResponse
 import com.example.spotifywearapp.models.WebAPI.CurrentlyPlayingObject
 import com.example.spotifywearapp.models.WebAPI.Playback
+import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.models.WebAPI.Playlists
 
 interface  ApiRepository{
@@ -24,7 +25,7 @@ interface  ApiRepository{
     suspend fun toggleShufflePlayback(context: Context, authHeader: Map<String, String>, state: Boolean): Boolean
 
     // get the list of playlists
-    suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): Playlists
+    suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): List<Playlist>
     /*
      temporary impl
      */

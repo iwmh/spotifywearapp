@@ -1,20 +1,24 @@
 package com.example.spotifywearapp.fragments
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.SwipeDismissFrameLayout
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.dummy.DummyContent
-import 	androidx.wear.widget.WearableRecyclerView
+import com.example.spotifywearapp.fragments.recyclerviewadapters.PlaylistsRecyclerViewAdapter
+import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
-import com.example.spotifywearapp.viewmodels.SettingsViewModel
 import org.koin.android.ext.android.inject
 
 /**
@@ -72,16 +76,26 @@ class PlaylistsFragment : Fragment() {
 
         addCallback(callback)
 
-        // Set the adapter
-        if (view is RecyclerView) {
+        val listOfPlaylistObserver = Observer<List<Playlist>> { newListOfPlaylist->
+
+            // Set the adapter
+            var view = findViewById<RecyclerView>(R.id.listofplaylist)
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = PlaylistsRecyclerViewAdapter(DummyContent.ITEMS)
+                adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
+                layoutManager = GridLayoutManager(context, columnCount)
             }
+            // Set the adapter
+//            if (view is RecyclerView) {
+//                with(view) {
+//                    adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
+//                    layoutManager = GridLayoutManager(context, columnCount)
+//                }
+//            }
+
         }
+
+        playlistsVM.listOfPlaylists.observe(viewLifecycleOwner, listOfPlaylistObserver)
+
     }
 
     companion object {

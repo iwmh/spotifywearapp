@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spotifywearapp.models.WebAPI.Playback
+import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.models.WebAPI.Playlists
 import com.example.spotifywearapp.repositories.ApiRepository
 import com.example.spotifywearapp.repositories.StorageRepository
@@ -27,8 +28,8 @@ class PlaylistsViewModel(val apiRepository: ApiRepository, val storageRepository
     }
 
     // LiveData
-    val listOfPlaylists: MutableLiveData<Playlists> by lazy {
-        MutableLiveData<Playlists>()
+    val listOfPlaylists: MutableLiveData<List<Playlist>> by lazy {
+        MutableLiveData<List<Playlist>>()
     }
 
     // Get the current playback

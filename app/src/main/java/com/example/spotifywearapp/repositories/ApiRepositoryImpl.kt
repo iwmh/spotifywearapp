@@ -203,9 +203,9 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
     }
 
     // get user's list of playlists
-    override suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): Playlists{
+    override suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): List<Playlist>{
 
-        var ret = Playlists()
+        var ret = listOf<Playlist>()
 
         // Request
         val response = Fuel.get(
@@ -219,7 +219,7 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         // TODO: implementation of the flow for the err
 
         if (playlists!= null) {
-            ret = playlists
+            ret = playlists.items
         }
 
         return ret

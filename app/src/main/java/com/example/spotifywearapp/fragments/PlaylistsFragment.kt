@@ -84,14 +84,6 @@ class PlaylistsFragment : Fragment() {
                 adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
                 layoutManager = GridLayoutManager(context, columnCount)
             }
-            // Set the adapter
-            if (view is RecyclerView) {
-                with(view) {
-                    adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
-                    layoutManager = GridLayoutManager(context, columnCount)
-                }
-            }
-
         }
 
         playlistsVM.listOfPlaylists.observe(viewLifecycleOwner, listOfPlaylistObserver)

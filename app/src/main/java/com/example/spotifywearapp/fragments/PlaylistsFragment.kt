@@ -85,12 +85,12 @@ class PlaylistsFragment : Fragment() {
                 layoutManager = GridLayoutManager(context, columnCount)
             }
             // Set the adapter
-//            if (view is RecyclerView) {
-//                with(view) {
-//                    adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
-//                    layoutManager = GridLayoutManager(context, columnCount)
-//                }
-//            }
+            if (view is RecyclerView) {
+                with(view) {
+                    adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
+                    layoutManager = GridLayoutManager(context, columnCount)
+                }
+            }
 
         }
 

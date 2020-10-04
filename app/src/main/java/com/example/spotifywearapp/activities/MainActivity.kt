@@ -54,7 +54,6 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
 
         override fun onUpdateAmbient() {
             // Update the content
-            var kjsfh = navController.currentDestination
         }
     }
 

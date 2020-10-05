@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion 28
@@ -93,7 +94,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$arch_version"
 
     // Stable Koin Version
-    def koin_version = "2.1.5"
+    def koin_version = "2.2.0-alpha-1"
 
     // Koin for Android
     implementation "org.koin:koin-android:$koin_version"
@@ -142,4 +143,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // or "kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2" // JVM dependency
 }

@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.SwipeDismissFrameLayout
 import com.example.spotifywearapp.R
-import com.example.spotifywearapp.dummy.DummyContent
 import com.example.spotifywearapp.fragments.recyclerviewadapters.PlaylistsRecyclerViewAdapter
 import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
@@ -81,7 +80,7 @@ class PlaylistsFragment : Fragment() {
             // Set the adapter
             var view = findViewById<RecyclerView>(R.id.listofplaylist)
             with(view) {
-                adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context)
+                adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context, playlistsVM)
                 layoutManager = GridLayoutManager(context, columnCount)
             }
         }

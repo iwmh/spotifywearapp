@@ -1,13 +1,11 @@
 package com.example.spotifywearapp.viewmodels
 
 import android.content.Context
-import android.media.Image
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spotifywearapp.models.WebAPI.Playback
+import com.example.spotifywearapp.models.WebAPI.PlaybackReqBody
 import com.example.spotifywearapp.models.WebAPI.Playlist
-import com.example.spotifywearapp.models.WebAPI.Playlists
 import com.example.spotifywearapp.repositories.ApiRepository
 import com.example.spotifywearapp.repositories.StorageRepository
 import com.example.spotifywearapp.utils.Constants
@@ -41,6 +39,18 @@ class PlaylistsViewModel(val apiRepository: ApiRepository, val storageRepository
             val playlists = apiRepository.getListOfPlaylists(context, authHeader)
 
             listOfPlaylists.postValue(playlists)
+        }
+    }
+
+    // Get the current playback
+    fun playPlaylist(context: Context, context_uri: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // create authorization header
+            val authHeader = createAuthorizationHeader(context)
+            // create request body
+            val reqBody = PlaybackReqBody(context_uri = context_uri)
+            // call repo's function
+            apiRepository.startResumePlayback(context, authHeader, reqBody)
         }
     }
 

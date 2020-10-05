@@ -1,19 +1,21 @@
 package com.example.spotifywearapp.fragments.recyclerviewadapters
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
-
-import com.example.spotifywearapp.dummy.DummyContent.DummyItem
 import com.example.spotifywearapp.fragments.PlaylistsFragment
 import com.example.spotifywearapp.models.WebAPI.Playlist
-import kotlin.coroutines.coroutineContext
+import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
+
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -21,8 +23,21 @@ import kotlin.coroutines.coroutineContext
  */
 class PlaylistsRecyclerViewAdapter(
     private val values: List<Playlist>,
-    private val context: Context
-) : RecyclerView.Adapter<PlaylistsRecyclerViewAdapter.ViewHolder>() {
+    private val context: Context,
+    private val playlistsViewModel: PlaylistsViewModel
+) : RecyclerView.Adapter<PlaylistsRecyclerViewAdapter.ViewHolder>(){
+
+    private var mRecycler: RecyclerView? = null
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecycler = recyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        mRecycler = null
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -36,7 +51,10 @@ class PlaylistsRecyclerViewAdapter(
         Glide.with(context).load(item.images[0].url).into(holder.playlistImage)
         // set playlist name
         holder.playlistName.text = item.name
-        // set isnowplaying
+
+        holder.itemView.setOnClickListener{ v ->
+            playlistsViewModel.playPlaylist(context, item.uri)
+        }
     }
 
     override fun getItemCount(): Int = values.size
@@ -44,6 +62,6 @@ class PlaylistsRecyclerViewAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val playlistImage: ImageView = view.findViewById(R.id.playlist_image)
         val playlistName: TextView = view.findViewById(R.id.playlist_name)
-
     }
+
 }

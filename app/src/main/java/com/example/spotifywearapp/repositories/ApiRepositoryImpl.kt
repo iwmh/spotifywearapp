@@ -10,9 +10,11 @@ import com.example.spotifywearapp.utils.getSecrets
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.awaitResponseResult
+import com.github.kittinunf.fuel.core.extensions.jsonBody
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 class ApiRepositoryImpl(app: Application) : ApiRepository {
@@ -226,6 +228,26 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
 
     }
 
+    override suspend fun startResumePlayback(
+        context: Context,
+        authHeader: Map<String, String>,
+        reqBody: PlaybackReqBody
+    ): Boolean{
+
+        return withContext(Dispatchers.IO) {
+
+            // Request
+            val response = Fuel.put(
+                "https://api.spotify.com/v1/me/player/play"
+            )
+            .jsonBody(Json.encodeToString(reqBody))
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .header(authHeader)
+            .responseObject(SnapshotId.Deserializer())
+
+            response.second.statusCode == 204
+        }
+    }
 
 
 }

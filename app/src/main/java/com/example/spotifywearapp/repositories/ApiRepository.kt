@@ -2,10 +2,7 @@ package com.example.spotifywearapp.repositories
 
 import android.content.Context
 import com.example.spotifywearapp.models.AccessTokenResponse
-import com.example.spotifywearapp.models.WebAPI.CurrentlyPlayingObject
-import com.example.spotifywearapp.models.WebAPI.Playback
-import com.example.spotifywearapp.models.WebAPI.Playlist
-import com.example.spotifywearapp.models.WebAPI.Playlists
+import com.example.spotifywearapp.models.WebAPI.*
 
 interface  ApiRepository{
 
@@ -26,9 +23,13 @@ interface  ApiRepository{
 
     // get the list of playlists
     suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): List<Playlist>
+
     /*
      temporary impl
      */
     suspend fun addTracksToPlaylist(context: Context, authHeader: Map<String, String>, playlistIdFav: String, tracks: Array<String>): Int
+
+    // start/resume a user's playback
+    suspend fun startResumePlayback(context: Context, authHeader: Map<String, String>, reqBody: PlaybackReqBody): Boolean
 
 }

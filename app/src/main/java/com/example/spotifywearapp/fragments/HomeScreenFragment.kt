@@ -110,7 +110,7 @@ class HomeScreenFragment : Fragment(),
     // on item selected
     override fun onItemSelected(pos: Int) {
         when(pos){
-            0 -> ""
+            0 -> navController.navigate(R.id.toPlaylistFragment)
             1 -> navController.navigate(R.id.settingsFragment)
             2 -> navController.navigate(R.id.playlistsFragment)
         }

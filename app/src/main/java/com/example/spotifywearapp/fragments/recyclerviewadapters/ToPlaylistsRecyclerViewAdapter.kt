@@ -17,11 +17,11 @@ import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class PlaylistsRecyclerViewAdapter(
+class ToPlaylistsRecyclerViewAdapter(
     private val values: List<Playlist>,
     private val context: Context,
     private val playlistsViewModel: PlaylistsViewModel
-) : RecyclerView.Adapter<PlaylistsRecyclerViewAdapter.ViewHolder>(){
+) : RecyclerView.Adapter<ToPlaylistsRecyclerViewAdapter.ViewHolder>(){
 
     private var mRecycler: RecyclerView? = null
 
@@ -48,9 +48,9 @@ class PlaylistsRecyclerViewAdapter(
         // set playlist name
         holder.playlistName.text = item.name
 
-        holder.itemView.setOnClickListener{ v ->
-            playlistsViewModel.playPlaylist(context, item.uri)
-        }
+//        holder.itemView.setOnClickListener{ v ->
+//            playlistsViewModel.playPlaylist(context, item.uri)
+//        }
     }
 
     override fun getItemCount(): Int = values.size

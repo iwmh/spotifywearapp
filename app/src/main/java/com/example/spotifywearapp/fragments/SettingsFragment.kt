@@ -82,7 +82,6 @@ class SettingsFragment : Fragment() {
                 }
                 shuffle.drawable.setTint(tint)
 
-
                 // set onClickListener
                 shuffle.setOnClickListener { v ->
                     val vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

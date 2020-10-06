@@ -32,4 +32,7 @@ interface  ApiRepository{
     // start/resume a user's playback
     suspend fun startResumePlayback(context: Context, authHeader: Map<String, String>, reqBody: PlaybackReqBody): Boolean
 
+    // get current user's profile
+    suspend fun getCurrentUsersProfile(context: Context, authHeader: Map<String, String>): UserProfile?
+
 }

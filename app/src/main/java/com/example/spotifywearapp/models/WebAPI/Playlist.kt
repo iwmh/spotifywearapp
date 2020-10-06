@@ -6,6 +6,9 @@ data class Playlist(
     val id: String = "",
     val images: List<Image> = listOf(),
     val name: String = "",
+    val owner: Owner = Owner(),
     val tracks: Tracks = Tracks(),
-    val uri: String = ""
+    val uri: String = "",
+    // added prop
+    var currentyTargeted: Boolean = false
 )

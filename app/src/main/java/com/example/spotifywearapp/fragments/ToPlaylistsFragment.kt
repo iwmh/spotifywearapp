@@ -5,19 +5,25 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.provider.SyncStateContract
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.SwipeDismissFrameLayout
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.fragments.recyclerviewadapters.PlaylistsRecyclerViewAdapter
+import com.example.spotifywearapp.fragments.recyclerviewadapters.ToPlaylistsRecyclerViewAdapter
 import com.example.spotifywearapp.models.WebAPI.Playlist
+import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 /**
@@ -54,8 +60,10 @@ class ToPlaylistsFragment : Fragment() {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
 
-        // get the list of playlists
-        playlistsVM.getListOfPlaylists(requireContext())
+        // get the list of collaborative playlists
+        lifecycleScope.launch {
+            playlistsVM.getListOfCollaborativePlaylists(requireContext())
+        }
 
     }
 
@@ -75,12 +83,14 @@ class ToPlaylistsFragment : Fragment() {
 
         addCallback(callback)
 
+//        var pb = findViewById<ProgressBar>(R.id.loadPlaylists)
+
         val listOfPlaylistObserver = Observer<List<Playlist>> { newListOfPlaylist->
 
             // Set the adapter
             var view = findViewById<RecyclerView>(R.id.listofplaylist)
             with(view) {
-                adapter = PlaylistsRecyclerViewAdapter(newListOfPlaylist, context, playlistsVM)
+                adapter = ToPlaylistsRecyclerViewAdapter(newListOfPlaylist, context, playlistsVM)
                 layoutManager = GridLayoutManager(context, columnCount)
             }
         }

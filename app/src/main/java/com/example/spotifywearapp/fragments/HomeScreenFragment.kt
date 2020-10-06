@@ -25,6 +25,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
+import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.viewmodels.HomeViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,13 @@ class HomeScreenFragment : Fragment(),
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = findNavController(view)
+
+        val playlist_id_fav = homeVM.readDataFromStorage(requireContext(), Constants.add_to_playlist_id)
+        if(playlist_id_fav.isNullOrEmpty()){
+            navController.navigate(R.id.toPlaylistFragment)
+        }
 
         // get each view
         val currentTimeView = view?.findViewById<TextView>(R.id.current_time)
@@ -94,8 +102,6 @@ class HomeScreenFragment : Fragment(),
 
         // ...temporal implementation
         homeVM.storeTargetPlaylistId(requireContext())
-
-        navController = findNavController(view)
 
         // Initialize top navigation drawer
         wearableNavigationDrawer = view.findViewById(R.id.top_navigation_drawer)

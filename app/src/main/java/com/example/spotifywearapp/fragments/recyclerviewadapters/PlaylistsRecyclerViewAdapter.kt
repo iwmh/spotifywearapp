@@ -23,17 +23,17 @@ class PlaylistsRecyclerViewAdapter(
     private val playlistsViewModel: PlaylistsViewModel
 ) : RecyclerView.Adapter<PlaylistsRecyclerViewAdapter.ViewHolder>(){
 
-    private var mRecycler: RecyclerView? = null
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        mRecycler = recyclerView
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        mRecycler = null
-    }
+//    private var mRecycler: RecyclerView? = null
+//
+//    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView)
+//        mRecycler = recyclerView
+//    }
+//
+//    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+//        super.onDetachedFromRecyclerView(recyclerView)
+//        mRecycler = null
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

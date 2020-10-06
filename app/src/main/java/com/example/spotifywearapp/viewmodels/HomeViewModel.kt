@@ -137,7 +137,6 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         return apiRepository.getCurrentlyPlayingTrack(context, authHeader)
     }
 
-
     fun storeTargetPlaylistId(context: Context){
         // * temporary implementation
         val jsonFileString = getJsonDataFromAsset(
@@ -147,12 +146,6 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         val gson = Gson()
         val secretsType = object : TypeToken<Secrets>(){}.type
         val secrets: Secrets = gson.fromJson(jsonFileString, secretsType)
-        storeDataToStorage(
-            context,
-            "playlist_id_fav",
-            secrets.playlist_id_fav
-        )
-        // * temporary implementation
 
     }
 
@@ -164,7 +157,9 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         var ret = 0
         runBlocking {
             launch(context = Dispatchers.IO) {
-                val playlist_id_fav = readDataFromStorage(context, "playlist_id_fav")
+                // check the access token
+                checkAccessToken(context)
+                val playlist_id_fav = readDataFromStorage(context, Constants.add_to_playlist_id)
                 // create authorization header
                 val authHeader = createAuthorizationHeader(context)
                 // call repo's function
@@ -174,7 +169,6 @@ class HomeViewModel(val apiRepository: ApiRepository, val storageRepository: Sto
         }
 
         return ret
-
     }
 
 }

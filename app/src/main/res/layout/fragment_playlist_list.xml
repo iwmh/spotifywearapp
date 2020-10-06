@@ -6,18 +6,18 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/listofplaylist"
-    android:name="com.example.spotifywearapp.PlaylistsFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:boxedEdges="all"
-    app:layoutManager="LinearLayoutManager"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:context=".fragments.PlaylistsFragment"
-    tools:listitem="@layout/fragment_playlist" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listofplaylist"
+        android:name="com.example.spotifywearapp.PlaylistsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:boxedEdges="top|left|bottom"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".fragments.PlaylistsFragment"
+        tools:listitem="@layout/fragment_playlist" />
 
 </androidx.wear.widget.BoxInsetLayout>

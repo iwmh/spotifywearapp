@@ -1,15 +1,18 @@
 package com.example.spotifywearapp.fragments.recyclerviewadapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifywearapp.R
 import com.example.spotifywearapp.models.WebAPI.Playlist
+import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 
 
@@ -23,19 +26,22 @@ class ToPlaylistsRecyclerViewAdapter(
     private val playlistsViewModel: PlaylistsViewModel
 ) : RecyclerView.Adapter<ToPlaylistsRecyclerViewAdapter.ViewHolder>(){
 
-    private var mRecycler: RecyclerView? = null
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        mRecycler = recyclerView
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        mRecycler = null
-    }
+//    private var mRecycler: RecyclerView? = null
+//
+//    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView)
+//        mRecycler = recyclerView
+//    }
+//
+//    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+//        super.onDetachedFromRecyclerView(recyclerView)
+//        mRecycler = null
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // clear progressbar
+//        progressBar.clearAnimation()
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_playlist, parent, false)
         return ViewHolder(view)
@@ -47,10 +53,25 @@ class ToPlaylistsRecyclerViewAdapter(
         Glide.with(context).load(item.images[0].url).into(holder.playlistImage)
         // set playlist name
         holder.playlistName.text = item.name
+        // if it is currentTargetPlaylist, change the text color.
+        if(item.currentyTargeted){
+            holder.playlistName.setTextColor(Color.GREEN)
+        } else {
+            holder.playlistName.setTextColor(Color.WHITE)
+        }
 
-//        holder.itemView.setOnClickListener{ v ->
-//            playlistsViewModel.playPlaylist(context, item.uri)
-//        }
+        holder.itemView.setOnClickListener{ v ->
+
+            // register playlist id to sharedpref
+            playlistsViewModel.storeDataToStorage(context, Constants.add_to_playlist_id, item.id)
+
+            // check the playlist when clicking
+            values.forEachIndexed { index, playlist ->
+                playlist.currentyTargeted = index == position
+            }
+
+            playlistsViewModel.listOfPlaylists.postValue(values)
+        }
     }
 
     override fun getItemCount(): Int = values.size

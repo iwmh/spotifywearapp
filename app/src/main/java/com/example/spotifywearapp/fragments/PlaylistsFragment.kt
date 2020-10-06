@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.SwipeDismissFrameLayout
@@ -18,6 +19,7 @@ import com.example.spotifywearapp.R
 import com.example.spotifywearapp.fragments.recyclerviewadapters.PlaylistsRecyclerViewAdapter
 import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 /**
@@ -55,7 +57,9 @@ class PlaylistsFragment : Fragment() {
         }
 
         // get the list of playlists
-        playlistsVM.getListOfPlaylists(requireContext())
+        lifecycleScope.launch {
+            playlistsVM.getListOfPlaylists(requireContext())
+        }
 
     }
 

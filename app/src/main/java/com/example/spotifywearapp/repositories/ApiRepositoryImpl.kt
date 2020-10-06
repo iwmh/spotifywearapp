@@ -207,24 +207,27 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
     // get user's list of playlists
     override suspend fun getListOfPlaylists(context: Context, authHeader: Map<String, String>): List<Playlist>{
 
-        var ret = listOf<Playlist>()
+        return withContext(Dispatchers.IO) {
+            var ret = listOf<Playlist>()
 
-        // Request
-        val response = Fuel.get(
-            Constants.list_of_playlists
-        )
-        .header(Headers.CONTENT_TYPE, "application/json")
-        .header(authHeader)
-        .responseObject(Playlists.Deserializer())
-        var (playlists, err) = response.third
+            // Request
+            val response = Fuel.get(
+                Constants.list_of_playlists
+            )
+                .header(Headers.CONTENT_TYPE, "application/json")
+                .header(authHeader)
+                .responseObject(Playlists.Deserializer())
+            var (playlists, err) = response.third
 
-        // TODO: implementation of the flow for the err
+            // TODO: implementation of the flow for the err
 
-        if (playlists!= null) {
-            ret = playlists.items
+            if (playlists != null) {
+                ret = playlists.items
+            }
+
+            ret
+
         }
-
-        return ret
 
     }
 
@@ -249,5 +252,21 @@ class ApiRepositoryImpl(app: Application) : ApiRepository {
         }
     }
 
+    override suspend fun getCurrentUsersProfile(context: Context, authHeader: Map<String, String>): UserProfile?{
+
+        // Request
+        val response = Fuel.get(
+            Constants.current_users_profile
+        )
+        .header(Headers.CONTENT_TYPE, "application/x-www-form-urlencoded")
+        .header(authHeader)
+        .awaitResponseResult(UserProfile.Deserializer())
+        var (currentUsersProfile, err) = response.third
+
+        // TODO: implementation of the flow for the err
+
+        return currentUsersProfile
+
+    }
 
 }

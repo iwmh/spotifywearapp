@@ -16,10 +16,6 @@ import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class ToPlaylistsRecyclerViewAdapter(
     private val values: List<Playlist>,
     private val context: Context,

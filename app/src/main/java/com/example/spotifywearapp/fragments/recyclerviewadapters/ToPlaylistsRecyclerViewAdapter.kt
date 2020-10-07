@@ -23,13 +23,10 @@ import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 class ToPlaylistsRecyclerViewAdapter(
     private val values: List<Playlist>,
     private val context: Context,
-    private val playlistsViewModel: PlaylistsViewModel
+    private val playlistsViewModel: PlaylistsViewModel,
 ) : RecyclerView.Adapter<ToPlaylistsRecyclerViewAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // clear progressbar
-//        progressBar.clearAnimation()
-
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_playlist, parent, false)
         return ViewHolder(view)

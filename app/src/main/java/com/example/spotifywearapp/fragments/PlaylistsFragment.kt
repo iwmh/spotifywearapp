@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -79,7 +81,14 @@ class PlaylistsFragment : Fragment() {
 
         addCallback(callback)
 
+        // progress bar
+        val lo = findViewById<RelativeLayout>(R.id.progressBarHolder)
+        val pb = findViewById<ProgressBar>(R.id.progressBar)
+
         val listOfPlaylistObserver = Observer<List<Playlist>> { newListOfPlaylist->
+
+            // remove progress bar
+            lo.removeView(pb)
 
             // Set the adapter
             var view = findViewById<RecyclerView>(R.id.listofplaylist)

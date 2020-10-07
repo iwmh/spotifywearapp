@@ -20,4 +20,19 @@
         tools:context=".fragments.PlaylistsFragment"
         tools:listitem="@layout/fragment_playlist" />
 
+    <RelativeLayout
+        android:id="@+id/progressBarHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDuration="500" />
+
+    </RelativeLayout>
+
 </androidx.wear.widget.BoxInsetLayout>

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,10 +16,16 @@ import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 
 
 class ToPlaylistsRecyclerViewAdapter(
-    private val values: List<Playlist>,
     private val context: Context,
     private val playlistsViewModel: PlaylistsViewModel,
 ) : RecyclerView.Adapter<ToPlaylistsRecyclerViewAdapter.ViewHolder>(){
+
+    private var playlists = listOf<Playlist>()
+
+    fun setDataSet(newlists: List<Playlist>){
+        playlists = newlists
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,7 +35,7 @@ class ToPlaylistsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // set playlist image
-        val item = values[position]
+        val item = playlists[position]
         Glide.with(context).load(item.images[0].url).into(holder.playlistImage)
         // set playlist name
         holder.playlistName.text = item.name
@@ -47,15 +52,15 @@ class ToPlaylistsRecyclerViewAdapter(
             playlistsViewModel.storeDataToStorage(context, Constants.add_to_playlist_id, item.id)
 
             // check the playlist when clicking
-            values.forEachIndexed { index, playlist ->
+            playlists.forEachIndexed { index, playlist ->
                 playlist.currentyTargeted = index == position
             }
 
-            playlistsViewModel.listOfToPlaylists.postValue(values)
+            playlistsViewModel.listOfToPlaylists.postValue(playlists)
         }
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = playlists.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val playlistImage: ImageView = view.findViewById(R.id.playlist_image)

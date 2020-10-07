@@ -16,10 +16,16 @@ import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
 
 
 class PlaylistsRecyclerViewAdapter(
-    private val values: List<Playlist>,
     private val context: Context,
     private val playlistsViewModel: PlaylistsViewModel
 ) : RecyclerView.Adapter<PlaylistsRecyclerViewAdapter.ViewHolder>(){
+
+    private var playlists = listOf<Playlist>()
+
+    fun setDataSet(newLists: List<Playlist>){
+        playlists = newLists
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,7 +35,7 @@ class PlaylistsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // set playlist image
-        val item = values[position]
+        val item = playlists[position]
         Glide.with(context).load(item.images[0].url).into(holder.playlistImage)
         // set playlist name
         holder.playlistName.text = item.name
@@ -49,15 +55,15 @@ class PlaylistsRecyclerViewAdapter(
             playlistsViewModel.storeDataToStorage(context, Constants.currently_playing_playlist_id, item.id)
 
             // update the currently-playing status
-            values.forEachIndexed { index, playlist ->
+            playlists.forEachIndexed { index, playlist ->
                 playlist.currentlyPlaying = index == position
             }
 
-            playlistsViewModel.listOfPlaylists.postValue(values)
+            playlistsViewModel.listOfPlaylists.postValue(playlists)
         }
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = playlists.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val playlistImage: ImageView = view.findViewById(R.id.playlist_image)

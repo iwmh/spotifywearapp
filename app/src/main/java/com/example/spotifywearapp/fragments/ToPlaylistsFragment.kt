@@ -24,6 +24,7 @@ import com.example.spotifywearapp.fragments.recyclerviewadapters.ToPlaylistsRecy
 import com.example.spotifywearapp.models.WebAPI.Playlist
 import com.example.spotifywearapp.utils.Constants
 import com.example.spotifywearapp.viewmodels.PlaylistsViewModel
+import kotlinx.android.synthetic.main.fragment_playlist_list.view.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -85,20 +86,27 @@ class ToPlaylistsFragment : Fragment() {
         addCallback(callback)
 
         // progress bar
-        val lo = findViewById<RelativeLayout>(R.id.progressBarHolder)
-        val pb = findViewById<ProgressBar>(R.id.progressBar)
+        val progressBar = view.progressBar
+        // progress bar's parent
+        val relativeLayout = view.progressBarHolder
+
+        // Set the adapter
+        var recyclerView = view.listofplaylist
+        val toPlaylistAdapter = ToPlaylistsRecyclerViewAdapter(context, playlistsVM)
+        // prevent the view from resetting its scroll position
+        toPlaylistAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+        val layoutMngr = GridLayoutManager(context, columnCount)
+        with(recyclerView) {
+            adapter = toPlaylistAdapter
+            layoutManager = layoutMngr
+        }
 
         val listOfPlaylistObserver = Observer<List<Playlist>> { newListOfPlaylist->
 
+            toPlaylistAdapter.setDataSet(newListOfPlaylist)
             // remove progress bar
-            lo.removeView(pb)
-
-            // Set the adapter
-            var view = findViewById<RecyclerView>(R.id.listofplaylist)
-            with(view) {
-                adapter = ToPlaylistsRecyclerViewAdapter(newListOfPlaylist, context, playlistsVM)
-                layoutManager = GridLayoutManager(context, columnCount)
-            }
+            relativeLayout.removeView(progressBar)
         }
 
         playlistsVM.listOfToPlaylists.observe(viewLifecycleOwner, listOfPlaylistObserver)

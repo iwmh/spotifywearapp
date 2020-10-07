@@ -15,6 +15,7 @@ class Constants {
         const val refresh_token = "swo_refresh_token"
 
         const val add_to_playlist_id = "swo_add_to_playlist_id"
+        const val add_to_playlist_name = "swo_add_to_playlist_name"
         const val currently_playing_playlist_id = "swo_currently_playing_playlist_id"
 
         const val margin_seconds = 30

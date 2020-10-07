@@ -204,13 +204,16 @@ class HomeScreenFragment : Fragment(),
                         val vibrationEffect = VibrationEffect.createOneShot(300, DEFAULT_AMPLITUDE)
                         vibrator.vibrate(vibrationEffect)
 
+                        // get playlist name
+                        val playlistName = homeVM.readDataFromStorage(requireContext(), Constants.add_to_playlist_name)
+
                         // start confirmation activity
                         val intent = Intent(context, ConfirmationActivity::class.java).apply {
                             putExtra(
                                 ConfirmationActivity.EXTRA_ANIMATION_TYPE,
                                 ConfirmationActivity.SUCCESS_ANIMATION
                             )
-                            putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Track Added")
+                            putExtra(ConfirmationActivity.EXTRA_MESSAGE, "Added to $playlistName")
                         }
                         startActivity(intent)
                     }

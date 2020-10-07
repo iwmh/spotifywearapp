@@ -50,6 +50,8 @@ class ToPlaylistsRecyclerViewAdapter(
 
             // register playlist id to sharedpref
             playlistsViewModel.storeDataToStorage(context, Constants.add_to_playlist_id, item.id)
+            // also playlist name
+            playlistsViewModel.storeDataToStorage(context, Constants.add_to_playlist_name, item.name)
 
             // check the playlist when clicking
             playlists.forEachIndexed { index, playlist ->

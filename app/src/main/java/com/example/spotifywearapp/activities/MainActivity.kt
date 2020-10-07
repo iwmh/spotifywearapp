@@ -35,20 +35,16 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
         override fun onEnterAmbient(ambientDetails: Bundle?) {
             // Handle entering ambient mode
 
-            // If the current destination is the FirstFragment, it won't navigate.
-            var currentDest = navController.currentDestination
-            if(currentDest?.label != "fragment_first_screen"){
-                navController.navigate(R.id.ambientScreenFragment)
-            }
         }
 
         override fun onExitAmbient() {
             // Handle exiting ambient mode
             var currentDest = navController.currentDestination
-            // If the current destination is the FirstFragment, it won't navigate.
 
-            if(currentDest?.label != "fragment_first_screen"){
-                navController.popBackStack()
+            // TODO
+            // achieve update-page-on-exit by navigating to home
+            if(currentDest?.label == "fragment_home_screen"){
+                navController.navigate(R.id.homeScreenFragment)
             }
         }
 
@@ -56,9 +52,6 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
             // Update the content
         }
     }
-
-
-
 
 }
 

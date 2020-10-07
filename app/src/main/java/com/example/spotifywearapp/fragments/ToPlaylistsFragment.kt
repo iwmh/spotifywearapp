@@ -95,7 +95,7 @@ class ToPlaylistsFragment : Fragment() {
             }
         }
 
-        playlistsVM.listOfPlaylists.observe(viewLifecycleOwner, listOfPlaylistObserver)
+        playlistsVM.listOfToPlaylists.observe(viewLifecycleOwner, listOfPlaylistObserver)
 
     }
 

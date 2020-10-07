@@ -26,18 +26,6 @@ class ToPlaylistsRecyclerViewAdapter(
     private val playlistsViewModel: PlaylistsViewModel
 ) : RecyclerView.Adapter<ToPlaylistsRecyclerViewAdapter.ViewHolder>(){
 
-//    private var mRecycler: RecyclerView? = null
-//
-//    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-//        super.onAttachedToRecyclerView(recyclerView)
-//        mRecycler = recyclerView
-//    }
-//
-//    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-//        super.onDetachedFromRecyclerView(recyclerView)
-//        mRecycler = null
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // clear progressbar
 //        progressBar.clearAnimation()
@@ -70,7 +58,7 @@ class ToPlaylistsRecyclerViewAdapter(
                 playlist.currentyTargeted = index == position
             }
 
-            playlistsViewModel.listOfPlaylists.postValue(values)
+            playlistsViewModel.listOfToPlaylists.postValue(values)
         }
     }
 

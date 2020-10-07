@@ -10,5 +10,6 @@ data class Playlist(
     val tracks: Tracks = Tracks(),
     val uri: String = "",
     // added prop
-    var currentyTargeted: Boolean = false
+    var currentyTargeted: Boolean = false,
+    var currentlyPlaying: Boolean = false
 )

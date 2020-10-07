@@ -229,6 +229,11 @@ class HomeScreenFragment : Fragment(),
                 homeVM.trackName.value = "No Track Playing"
             }
 
+            // store the currently playing playlist id
+            val uri = playing.context.uri
+            val playlistId = uri.split(":").last()
+            homeVM.storeDataToStorage(requireContext(), Constants.currently_playing_playlist_id, playlistId)
+
             // Clear the background color
             homeVM.shimmerColor.value = Color.TRANSPARENT
 

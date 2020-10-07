@@ -32,6 +32,10 @@ class PlaylistsViewModel(val apiRepository: ApiRepository, val storageRepository
         MutableLiveData<List<Playlist>>()
     }
 
+    val listOfToPlaylists: MutableLiveData<List<Playlist>> by lazy {
+        MutableLiveData<List<Playlist>>()
+    }
+
     // Get the list of playlist (including ones created by others)
     fun getListOfPlaylists(context: Context){
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,6 +45,12 @@ class PlaylistsViewModel(val apiRepository: ApiRepository, val storageRepository
             val authHeader = createAuthorizationHeader(context)
             // call repo's function
             val playlists = apiRepository.getListOfPlaylists(context, authHeader)
+
+            // get currently playing playlist id
+            val currentlyPlayingPlaylistId = readDataFromStorage(context, Constants.currently_playing_playlist_id)
+            playlists.find {
+                it.id == currentlyPlayingPlaylistId
+            }?.currentlyPlaying= true
 
             listOfPlaylists.postValue(playlists)
         }
@@ -67,7 +77,7 @@ class PlaylistsViewModel(val apiRepository: ApiRepository, val storageRepository
                 it.id == targetPlaylistId
             }?.currentyTargeted = true
 
-            listOfPlaylists.postValue(collaborativePlaylists)
+            listOfToPlaylists.postValue(collaborativePlaylists)
         }
     }
 

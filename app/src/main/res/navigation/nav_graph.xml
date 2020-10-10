@@ -66,5 +66,17 @@
         <action
             android:id="@+id/action_toPlaylistFragment_to_homeScreenFragment"
             app:destination="@id/homeScreenFragment" />
+        <action
+            android:id="@+id/action_toPlaylistFragment_to_startPageFragment"
+            app:destination="@id/startPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startPageFragment"
+        android:name="com.example.spotifywearapp.fragments.StartPageFragment"
+        android:label="fragment_start_page"
+        tools:layout="@layout/fragment_start_page" >
+        <action
+            android:id="@+id/action_startPageFragment_to_toPlaylistFragment"
+            app:destination="@id/toPlaylistFragment" />
     </fragment>
 </navigation>

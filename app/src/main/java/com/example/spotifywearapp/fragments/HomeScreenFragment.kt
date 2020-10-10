@@ -60,9 +60,12 @@ class HomeScreenFragment : Fragment(),
 
         navController = findNavController(view)
 
-        val playlist_id_fav = homeVM.readDataFromStorage(requireContext(), Constants.add_to_playlist_id)
-        if(playlist_id_fav.isNullOrEmpty()){
+        // if playlist_id is not stored, navigate to ToPlaylist page.
+        // ...in order for the StartPage to popBack, additionally navigate to startPageFragment.
+        val playlist_id = homeVM.readDataFromStorage(requireContext(), Constants.add_to_playlist_id)
+        if(playlist_id.isNullOrEmpty()){
             navController.navigate(R.id.toPlaylistFragment)
+            navController.navigate(R.id.startPageFragment)
         }
 
         // get each view

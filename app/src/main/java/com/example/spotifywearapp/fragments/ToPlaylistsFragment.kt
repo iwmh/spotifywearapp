@@ -15,6 +15,8 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.SwipeDismissFrameLayout
@@ -35,6 +37,8 @@ class ToPlaylistsFragment : Fragment() {
 
     private var columnCount = 1
 
+    private lateinit var navController : NavController
+
     private val callback = object : SwipeDismissFrameLayout.Callback() {
 
         override fun onSwipeStarted(layout: SwipeDismissFrameLayout) {
@@ -54,6 +58,10 @@ class ToPlaylistsFragment : Fragment() {
     }
 
     private val playlistsVM: PlaylistsViewModel by inject()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,5 +8,21 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="please_select_playlist">
+        1. Please select the playlist in the next page.
+    </string>
+
+    <string name="app_explanation">
+        2. You can add the track to the selected playlist by tapping the track image in the home page.
+    </string>
+
+    <string name="menu_explanation">
+        3. Menu is located in the top drawer.
+    </string>
+
+    <string name="ok">
+        OK
+    </string>
+
 
 </resources>

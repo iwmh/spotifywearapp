@@ -11,7 +11,7 @@
         android:name="com.example.spotifywearapp.PlaylistsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:boxedEdges="top|left"
+        app:boxedEdges="top|left|bottom"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

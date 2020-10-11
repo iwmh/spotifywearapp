@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeScreenFragment"
-        android:name="com.example.spotifywearapp.fragments.HomeScreenFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.HomeScreenFragment"
         android:label="fragment_home_screen"
         tools:layout="@layout/fragment_home_screen" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/firstScreenFragment"
-        android:name="com.example.spotifywearapp.fragments.FirstScreenFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.FirstScreenFragment"
         android:label="fragment_first_screen"
         tools:layout="@layout/fragment_first_screen" >
         <action
@@ -37,12 +37,12 @@
     </fragment>
     <fragment
         android:id="@+id/ambientScreenFragment"
-        android:name="com.example.spotifywearapp.fragments.AmbientScreenFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.AmbientScreenFragment"
         android:label="fragment_ambient_screen"
         tools:layout="@layout/fragment_ambient_screen" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.spotifywearapp.fragments.SettingsFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.SettingsFragment"
         android:label="settings_fragment"
         tools:layout="@layout/settings_fragment" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistsFragment"
-        android:name="com.example.spotifywearapp.fragments.PlaylistsFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.PlaylistsFragment"
         android:label="fragment_playlist_list"
         tools:layout="@layout/fragment_playlist_list" >
         <action
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/toPlaylistFragment"
-        android:name="com.example.spotifywearapp.fragments.ToPlaylistsFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.ToPlaylistsFragment"
         android:label="dummy_item_list"
         tools:layout="@layout/dummy_item_list" >
         <action
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/startPageFragment"
-        android:name="com.example.spotifywearapp.fragments.StartPageFragment"
+        android:name="com.iwmh.spotifywearapp.fragments.StartPageFragment"
         android:label="fragment_start_page"
         tools:layout="@layout/fragment_start_page" >
         <action

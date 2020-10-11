@@ -235,8 +235,8 @@ class HomeScreenFragment : Fragment(),
                 homeVM.trackName.value = "No Track Playing"
             }
 
-            // store the currently playing playlist id
-            val uri = playing.context.uri
+            // if the track is in some playlist, store the currently playing playlist id
+            val uri = if(playing.context != null) playing.context.uri else ""
             val playlistId = uri.split(":").last()
             homeVM.storeDataToStorage(requireContext(), Constants.currently_playing_playlist_id, playlistId)
 

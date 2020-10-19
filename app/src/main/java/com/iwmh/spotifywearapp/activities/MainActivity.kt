@@ -7,10 +7,7 @@ import androidx.wear.ambient.AmbientModeSupport
 import com.iwmh.spotifywearapp.R
 
 class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
-        /*
-        * Declare an ambient mode controller, which will be used by
-        * the activity to determine if the current mode is ambient.
-        */
+
     private lateinit var ambientController: AmbientModeSupport.AmbientController
 
     override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback = MyAmbientCallback()
